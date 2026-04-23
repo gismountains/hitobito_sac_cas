@@ -1,0 +1,34 @@
+-#  Copyright (c) 2026, Schweizer Alpen-Club. This file is part of
+-#  hitobito_sac_cas and licensed under the Affero General Public License version 3
+-#  or later. See the COPYING file at the top-level directory or at
+-#  https://github.com/hitobito/hitobito_sac_cas.
+-#
+-#  Redesigned Tour-erfassen form — single-scroll with side-nav and live preview.
+-#  Sections map 1:1 to the original tabs (Allgemein, Daten, Anmeldung,
+-#  Preise, Anmeldeangaben, Administrationsangaben).
+
+.tour-form--redesign{ data: { controller: 'tour-form-redesign', 'hide-optional': 'false' } }
+  = entry_form cancel_url_new: typed_group_events_path(@group, entry.klass),
+    html: { class: 'tabbed', data: { controller: 'form-field-inheritance tour-form-redesign-form' } } do |f|
+    - if entry.new_record?
+      = f.hidden_field :type
+
+    = render 'events/tour/topbar', f: f, entry: entry
+
+    .tour-form--redesign__grid
+      = render 'events/tour/side_nav', f: f, entry: entry
+
+      .tour-form--redesign__editor
+        .inner
+          = render 'events/tour/section_allgemein', f: f, entry: entry
+          = render 'events/tour/section_daten',     f: f, entry: entry
+          = render 'events/tour/section_anmeldung', f: f, entry: entry
+          = render 'events/tour/section_preise',    f: f, entry: entry
+          = render 'events/tour/section_fragen',    f: f, entry: entry
+          = render 'events/tour/section_admin',     f: f, entry: entry
+
+      = render 'events/tour/preview_panel', f: f, entry: entry
+
+    = render_extensions 'form_actions_caption', locals: { f: f }
+
+  = render 'events/tour/script'

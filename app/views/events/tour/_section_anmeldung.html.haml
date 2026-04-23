@@ -1,0 +1,49 @@
+-#  Copyright (c) 2026, Schweizer Alpen-Club. This file is part of
+-#  hitobito_sac_cas and licensed under the Affero General Public License version 3
+-#  or later. See the COPYING file at the top-level directory or at
+-#  https://github.com/hitobito/hitobito_sac_cas.
+
+%section#tfr-anmeldung.tour-form--redesign__section
+  .tour-form--redesign__section__head
+    .tour-form--redesign__section__num § 03
+    %div
+      .tour-form--redesign__section__title= Event::Application.model_name.human
+      .tour-form--redesign__section__subtitle= t('events.form.anmeldung_subtitle', default: 'Wer darf sich wann anmelden, und wie viele?')
+
+  = f.labeled_input_fields(*entry.used_attributes(:application_opening_at, :application_closing_at))
+  = f.labeled_input_fields(*entry.used_attributes(:application_conditions))
+
+  .tour-form--redesign__split-4
+    - entry.used?(:minimum_participants) do
+      = f.labeled_input_field(:minimum_participants)
+    - entry.used?(:maximum_participants) do
+      = f.labeled_input_field(:maximum_participants)
+    %div{ data: { optional: 'true' } }
+      - entry.used?(:minimum_age) do
+        = f.labeled_input_field(:minimum_age)
+    %div{ data: { optional: 'true' } }
+      - entry.used?(:maximum_age) do
+        = f.labeled_input_field(:maximum_age)
+
+  .tour-form--redesign__card
+    .tour-form--redesign__card__label= t('events.form.visibility_rules', default: 'Sichtbarkeit & Regeln')
+
+    - entry.used?(:external_applications) do
+      = f.labeled_boolean_field(:external_applications, caption: t('events.form.caption_external_applications'))
+    - entry.used?(:participations_visible) do
+      = f.labeled_boolean_field(:participations_visible, caption: t('events.form.caption_participations_visible'))
+    - entry.used?(:applications_cancelable) do
+      = f.labeled_boolean_field(:applications_cancelable, caption: t('events.form.caption_applications_cancelable'))
+    - entry.used?(:display_booking_info) do
+      = f.labeled_boolean_field(:display_booking_info, caption: t('events.form.caption_display_booking_info'))
+    - entry.used?(:priorization) do
+      = f.labeled_boolean_field(:priorization, caption: t('events.form.caption_prioritization'))
+    - entry.used?(:automatic_assignment) do
+      = f.labeled_boolean_field(:automatic_assignment, caption: t('events.form.caption_automatic_assignment'))
+    - entry.used?(:waiting_list) do
+      = f.labeled_boolean_field(:waiting_list, caption: t('events.form.caption_waiting_list'))
+    - application_approve_role_exists? && entry.used?(:requires_approval) do
+      = f.labeled_boolean_field(:requires_approval, caption: t('events.form.caption_requires_approval'))
+
+    = render_extensions 'application_middle_fields', locals: { f: f }
+    = render_extensions 'application_fields', locals: { f: f }

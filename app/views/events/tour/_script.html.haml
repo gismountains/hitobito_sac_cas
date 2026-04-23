@@ -1,0 +1,163 @@
+-#  Copyright (c) 2026, Schweizer Alpen-Club. This file is part of
+-#  hitobito_sac_cas and licensed under the Affero General Public License version 3
+-#  or later. See the COPYING file at the top-level directory or at
+-#  https://github.com/hitobito/hitobito_sac_cas.
+-#
+-#  Vanilla JS to drive the tour-form redesign:
+-#  - scroll-spy between sections → active nav link
+-#  - live preview from inputs tagged with data-preview-field
+-#  - checklist ticks as the user fills in required fields
+-#  - hide-optional toggle via data-hide-optional attribute
+
+:javascript
+  (function () {
+    const init = () => {
+      const root = document.querySelector('.tour-form--redesign');
+      if (!root) { document.body.classList.remove('tfr-active'); return; }
+      document.body.classList.add('tfr-active');
+
+      // ── Scroll-spy ────────────────────────────────────────────────
+      const navLinks = root.querySelectorAll('[data-tour-form-redesign-target="navLink"]');
+      const sections = Array.from(navLinks)
+        .map(l => document.getElementById(l.dataset.sectionId))
+        .filter(Boolean);
+
+      const setActive = (id) => {
+        navLinks.forEach(l => l.classList.toggle('is-active', l.dataset.sectionId === id));
+      };
+
+      if ('IntersectionObserver' in window && sections.length) {
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach(e => {
+            if (e.isIntersecting) setActive(e.target.id);
+          });
+        }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+        sections.forEach(s => io.observe(s));
+      }
+
+      navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          const id = link.dataset.sectionId;
+          const el = document.getElementById(id);
+          if (!el) return;
+          e.preventDefault();
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          setActive(id);
+        });
+      });
+
+      // ── Live preview ──────────────────────────────────────────────
+      const slots = {};
+      root.querySelectorAll('[data-preview-slot]').forEach(el => {
+        slots[el.dataset.previewSlot] = el;
+      });
+
+      const currency = '#{t('global.currency', default: 'CHF')}';
+      const elevationUnit = '#{I18n.t('global.elevation_unit', default: 'Hm')}';
+
+      const updateFrom = (field, value) => {
+        value = (value || '').trim();
+        switch (field) {
+          case 'name':
+            if (slots.name) slots.name.textContent = value || '#{t('events.form.new_tour', default: 'Neue Tour')}';
+            break;
+          case 'description':
+            if (slots.description) {
+              slots.description.textContent = value.length > 140 ? value.slice(0, 140) + '…' : value;
+              slots.description.style.display = value ? '' : 'none';
+            }
+            break;
+          case 'summit':
+            if (slots.summit) slots.summit.textContent = value || '—';
+            break;
+          case 'ascent':
+            if (slots.ascent) slots.ascent.textContent = value ? `${value} ${elevationUnit}` : '—';
+            break;
+          case 'location':
+            // Not directly shown, could go into kind cell later.
+            break;
+          case 'price_member':
+            if (slots.price) slots.price.textContent = value ? `${currency} ${value}` : '—';
+            break;
+        }
+        updateParticipants();
+        updateDate();
+        updateChecklist();
+        updateSummary();
+      };
+
+      const updateParticipants = () => {
+        const min = root.querySelector('[name="event[minimum_participants]"]')?.value;
+        const max = root.querySelector('[name="event[maximum_participants]"]')?.value;
+        if (slots.participants) {
+          slots.participants.textContent = `${min || '—'}–${max || '—'}`;
+        }
+      };
+
+      const updateDate = () => {
+        const first = root.querySelector('[name*="[dates_attributes]"][name*="[start_at"]');
+        if (first && slots.date) {
+          const v = first.value;
+          slots.date.textContent = v ? v.replace('T', ' ').replace(':00.000', '') : '—';
+        }
+      };
+
+      const updateSummary = () => {
+        const appQs = root.querySelectorAll('[name*="[application_questions_attributes]"][name$="[id]"]').length;
+        const adminQs = root.querySelectorAll('[name*="[admin_questions_attributes]"][name$="[id]"]').length;
+        const dates = root.querySelectorAll('[name*="[dates_attributes]"][name$="[id]"]').length;
+        if (slots['questions-count']) slots['questions-count'].textContent = appQs;
+        if (slots['admin-count']) slots['admin-count'].textContent = adminQs;
+        if (slots['dates-count']) slots['dates-count'].textContent = dates;
+      };
+
+      // ── Checklist ─────────────────────────────────────────────────
+      const updateChecklist = () => {
+        const set = (key, ok) => {
+          const item = root.querySelector(`.tour-form--redesign__checklist .item[data-check="${key}"]`);
+          if (item) item.classList.toggle('is-done', Boolean(ok));
+        };
+        set('name', !!root.querySelector('[name="event[name]"]')?.value);
+        set('dates', !!root.querySelector('[name*="[dates_attributes]"][name*="[start_at"]')?.value);
+        set('price', !!root.querySelector('[name="event[price_member]"]')?.value);
+        const min = root.querySelector('[name="event[minimum_participants]"]')?.value;
+        const max = root.querySelector('[name="event[maximum_participants]"]')?.value;
+        set('participants', Boolean(min && max));
+      };
+
+      // ── Wire up field listeners ──────────────────────────────────
+      root.querySelectorAll('[data-preview-field]').forEach(el => {
+        const handler = () => updateFrom(el.dataset.previewField, el.value);
+        el.addEventListener('input', handler);
+        el.addEventListener('change', handler);
+      });
+      root.addEventListener('input', () => {
+        updateParticipants();
+        updateDate();
+        updateChecklist();
+        updateSummary();
+      });
+
+      // ── Hide-optional toggle ─────────────────────────────────────
+      const optToggle = root.querySelector('.tour-form--redesign__hide-optional input[type="checkbox"]');
+      if (optToggle) {
+        optToggle.addEventListener('change', () => {
+          root.setAttribute('data-hide-optional', optToggle.checked ? 'true' : 'false');
+        });
+      }
+
+      // Initial run
+      updateParticipants();
+      updateDate();
+      updateChecklist();
+      updateSummary();
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init, { once: true });
+    } else {
+      init();
+    }
+    // Support Turbo navigation
+    document.addEventListener('turbo:load', init);
+  })();

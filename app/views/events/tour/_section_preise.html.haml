@@ -1,0 +1,25 @@
+-#  Copyright (c) 2026, Schweizer Alpen-Club. This file is part of
+-#  hitobito_sac_cas and licensed under the Affero General Public License version 3
+-#  or later. See the COPYING file at the top-level directory or at
+-#  https://github.com/hitobito/hitobito_sac_cas.
+
+- price_attrs = entry.used_attributes(*Event::Tour::PRICE_ATTRIBUTES)
+
+%section#tfr-preise.tour-form--redesign__section
+  .tour-form--redesign__section__head
+    .tour-form--redesign__section__num § 04
+    %div
+      .tour-form--redesign__section__title= t('events.form_tabs.prices')
+      .tour-form--redesign__section__subtitle= t('events.form.preise_subtitle', default: 'Drei Kategorien — SAC-Sektion, SAC-extern, Gast.')
+
+  .tour-form--redesign__card
+    .tour-form--redesign__split-3
+      - price_attrs.each do |price_attribute|
+        .tour-form--redesign__price-card
+          .tour-form--redesign__price-card__title= price_category_label(entry, price_attribute)
+          .tour-form--redesign__price-card__hint= t("activerecord.attributes.event/tour.#{price_attribute}_hint", default: '')
+          = f.input_field(price_attribute, addon: t('global.currency'), type: 'number', step: 0.01, class: 'form-control',
+              data: (price_attribute == :price_member ? { 'preview-field': 'price_member' } : {}))
+
+    %div{ data: { optional: 'true' } }
+      = f.labeled_input_field(:price_description)

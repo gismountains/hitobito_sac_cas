@@ -1,0 +1,902 @@
+//  Copyright (c) 2026, Schweizer Alpen-Club. This file is part of
+//  hitobito_sac_cas and licensed under the Affero General Public License version 3
+//  or later. See the COPYING file at the top-level directory or at
+//  https://github.com/hitobito/hitobito_sac_cas.
+
+// Tour-erfassen redesign — single-scroll layout with side-nav and live preview.
+// Scoped under .tour-form--redesign so no global styles leak.
+
+.tour-form--redesign {
+  // Cool Swiss-admin neutrals (granite / slate).
+  // Sits beside the SAC red chrome without fighting it.
+  --tfr-paper: oklch(98% 0.003 250);      // crisp off-white
+  --tfr-paper-alt: oklch(95.5% 0.004 250); // card edge, inset
+  --tfr-card: oklch(99.5% 0.002 250);     // pure-ish white card
+  --tfr-line: oklch(90% 0.005 250);       // hairlines
+  --tfr-line-2: oklch(84% 0.006 250);     // stronger hairlines
+  --tfr-ink: oklch(20% 0.015 250);        // primary text (slate-near-black)
+  --tfr-ink-2: oklch(38% 0.012 250);      // secondary text
+  --tfr-ink-3: oklch(55% 0.010 250);      // tertiary text
+  --tfr-mute: oklch(72% 0.008 250);       // disabled/placeholder
+  --tfr-red: #{$sac_red};
+  --tfr-red-deep: #{$sac_red_hover};
+  --tfr-moss: oklch(48% 0.08 165);        // cool evergreen
+  --tfr-sun: oklch(72% 0.13 85);          // warm ochre kept for contrast
+  --tfr-ice: oklch(62% 0.09 230);         // glacier blue
+
+  --tfr-r1: 6px;
+  --tfr-r2: 10px;
+  --tfr-r3: 14px;
+
+  --tfr-sans: #{$sans-font-family};
+  --tfr-mono: "SFMono-Regular", Menlo, Consolas, monospace;
+
+  background: var(--tfr-paper);
+  color: var(--tfr-ink);
+  font-family: var(--tfr-sans);
+  min-height: 100vh;
+
+  // Strip Bootstrap-tab chrome — this form is single-scroll.
+  .nav-tabs { display: none; }
+  > .tab-content,
+  > form > .tab-content,
+  .tab-content { display: block; border: 0; padding: 0; }
+  .tab-pane {
+    display: block !important;
+    opacity: 1 !important;
+    padding: 0;
+  }
+
+  // ── Top bar ───────────────────────────────────────────
+  &__topbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    height: 56px;
+    padding: 0 24px;
+    background: var(--tfr-paper);
+    border-bottom: 1px solid var(--tfr-line);
+  }
+  &__crumb {
+    font-family: var(--tfr-mono);
+    font-size: 12px;
+    color: var(--tfr-ink-2);
+    letter-spacing: 0.4px;
+  }
+  &__title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--tfr-ink);
+  }
+  &__badge {
+    font-family: var(--tfr-mono);
+    font-size: 10px;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: var(--tfr-sun);
+    color: var(--tfr-ink);
+  }
+  &__saved {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: auto;
+    font-family: var(--tfr-mono);
+    font-size: 12px;
+    color: var(--tfr-ink-3);
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--tfr-moss);
+    }
+  }
+  &__actions {
+    display: inline-flex;
+    gap: 8px;
+  }
+  &__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 32px;
+    padding: 0 14px;
+    border-radius: var(--tfr-r1);
+    font-size: 13px;
+    font-weight: 500;
+    border: 1px solid var(--tfr-line);
+    background: transparent;
+    color: var(--tfr-ink);
+    cursor: pointer;
+    text-decoration: none;
+    transition: background .12s, border-color .12s;
+    &:hover { background: var(--tfr-card); color: var(--tfr-ink); text-decoration: none; }
+    &--primary {
+      background: var(--tfr-red);
+      border-color: var(--tfr-red);
+      color: #fff;
+      &:hover { background: var(--tfr-red-deep); border-color: var(--tfr-red-deep); color: #fff; }
+    }
+  }
+
+  // ── Layout grid ───────────────────────────────────────
+  &__grid {
+    display: grid;
+    grid-template-columns: 220px 1fr 360px;
+    min-height: calc(100vh - 56px);
+    align-items: stretch;
+  }
+  @media (max-width: 1200px) {
+    &__grid { grid-template-columns: 200px 1fr; }
+    &__preview { display: none; }
+  }
+  @media (max-width: 860px) {
+    &__grid { grid-template-columns: 1fr; }
+    &__nav { display: none; }
+  }
+
+  // ── Side nav ──────────────────────────────────────────
+  &__nav {
+    position: sticky;
+    top: 56px;
+    align-self: flex-start;
+    max-height: calc(100vh - 56px);
+    overflow-y: auto;
+    padding: 20px 12px;
+    border-right: 1px solid var(--tfr-line);
+    background: var(--tfr-paper);
+  }
+  &__nav-label {
+    font-family: var(--tfr-mono);
+    font-size: 10px;
+    color: var(--tfr-ink-3);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 0 10px 10px;
+  }
+  &__nav-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 8px 10px;
+    margin-bottom: 2px;
+    border: 0;
+    background: transparent;
+    border-radius: var(--tfr-r1);
+    color: var(--tfr-ink-2);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: left;
+    text-decoration: none;
+    &:hover { background: var(--tfr-card); color: var(--tfr-ink); text-decoration: none; }
+    .num {
+      font-family: var(--tfr-mono);
+      font-size: 10px;
+      color: var(--tfr-ink-3);
+      width: 18px;
+    }
+    &.is-active {
+      background: var(--tfr-card);
+      color: var(--tfr-ink);
+      font-weight: 600;
+      box-shadow: inset 2px 0 0 var(--tfr-red), 0 1px 2px rgba(0,0,0,.04);
+    }
+  }
+  &__nav-divider {
+    height: 1px;
+    background: var(--tfr-line);
+    margin: 20px 10px;
+  }
+  &__checklist {
+    padding: 0 10px;
+    .item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 0;
+      font-size: 12px;
+      color: var(--tfr-ink-2);
+    }
+    .dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 1.5px solid var(--tfr-line-2);
+      background: transparent;
+      flex-shrink: 0;
+    }
+    .item.is-done .dot {
+      background: var(--tfr-moss);
+      border-color: var(--tfr-moss);
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='4' stroke-linecap='round'><path d='M4 12 L10 18 L20 6'/></svg>");
+      background-size: 8px 8px;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+  }
+  &__hide-optional {
+    margin-top: 20px;
+    padding: 0 10px;
+    font-size: 13px;
+    color: var(--tfr-ink-2);
+    label { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; margin: 0; }
+    input { margin: 0; }
+  }
+
+  // ── Editor column ─────────────────────────────────────
+  &__editor {
+    padding: 32px 48px 120px;
+    min-width: 0;
+    .inner { max-width: 720px; margin: 0 auto; }
+  }
+  @media (max-width: 900px) {
+    &__editor { padding: 24px 16px 80px; }
+  }
+
+  // ── Section ───────────────────────────────────────────
+  &__section {
+    scroll-margin-top: 72px;
+    padding-top: 8px;
+    margin-bottom: 40px;
+    &__head {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    &__num {
+      font-family: var(--tfr-mono);
+      font-size: 11px;
+      color: var(--tfr-ink-3);
+      letter-spacing: 1px;
+      font-weight: 500;
+    }
+    &__title {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--tfr-ink);
+      letter-spacing: -0.3px;
+      line-height: 1.2;
+    }
+    &__subtitle {
+      font-size: 13px;
+      color: var(--tfr-ink-3);
+      margin-top: 2px;
+    }
+  }
+
+  // Form chrome — flatten Bootstrap rows inside the editor
+  &__editor .mb-3,
+  &__editor .row,
+  &__editor .form-group { margin-bottom: 14px; }
+  &__editor .form-label,
+  &__editor label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--tfr-ink-2);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin-bottom: 6px;
+    padding: 0;
+  }
+  &__editor .control-label,
+  &__editor .col-md-3,
+  &__editor .col-xl-2 {
+    max-width: none;
+    flex: 0 0 auto;
+    padding-right: 0;
+  }
+  &__editor .col-md-9,
+  &__editor .col-xl-10 {
+    max-width: 100%;
+    flex: 1 1 auto;
+    padding-left: 0;
+  }
+  // Stack label above input always, left-aligned micro-caps
+  &__editor .row > .col-md-3,
+  &__editor .row > .col-xl-2,
+  &__editor .row > label.col-form-label {
+    width: 100%;
+    max-width: 100%;
+    flex: 0 0 100%;
+    margin-bottom: 4px;
+    text-align: left !important;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  &__editor .row > .col-md-9,
+  &__editor .row > .col-xl-10,
+  &__editor .row > .labeled {
+    width: 100%;
+    max-width: 100%;
+    flex: 0 0 100%;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  &__editor .form-control,
+  &__editor .form-select {
+    background: var(--tfr-card);
+    border: 1px solid var(--tfr-line);
+    border-radius: var(--tfr-r1);
+    color: var(--tfr-ink);
+    font-size: 14px;
+    padding: 7px 12px;
+    height: auto;
+    min-height: 36px;
+    max-width: 100%;
+    &:focus {
+      border-color: var(--tfr-ink-2);
+      box-shadow: 0 0 0 3px oklch(70% 0.02 250 / 0.2);
+    }
+  }
+  // Neutralise Bootstrap's Hitobito-specific mw-*ch classes that cap
+  // inputs to character-based widths. Inside the redesign every input
+  // fills its labeled column.
+  &__editor .mw-100,
+  &__editor .mw-md-60ch,
+  &__editor .mw-md-47ch,
+  &__editor .mw-md-20ch,
+  &__editor .mw-md-15ch,
+  &__editor .mw-lg-63ch,
+  &__editor .mw-63ch { max-width: 100% !important; }
+  // Preserve bootstrap input-group layout (translated fields + addons):
+  // inner controls must stay flush, only the outer edges round.
+  &__editor .input-group {
+    align-items: stretch;
+    > .form-control,
+    > .form-select,
+    > .input-group-text,
+    > .btn {
+      border-radius: 0;
+      border-color: var(--tfr-line);
+    }
+    > :first-child { border-top-left-radius: var(--tfr-r1); border-bottom-left-radius: var(--tfr-r1); }
+    > :last-child  { border-top-right-radius: var(--tfr-r1); border-bottom-right-radius: var(--tfr-r1); }
+    // Button at the right edge (globalized-fields toggle, currency, etc.)
+    > .btn {
+      background: var(--tfr-paper-alt);
+      border-color: var(--tfr-line);
+      color: var(--tfr-ink-2);
+      min-height: 36px;
+      padding: 0 12px;
+      font-size: 12px;
+      &:hover { background: var(--tfr-card); color: var(--tfr-ink); }
+      &:focus { box-shadow: none; }
+    }
+    > .input-group-text {
+      min-height: 36px;
+      padding: 0 12px;
+    }
+    // Consecutive inputs (translated siblings) get a hairline separator
+    > .form-control + .form-control,
+    > .form-control + .form-select {
+      border-left: 1px solid var(--tfr-line);
+    }
+  }
+  &__editor .locale-indicator {
+    font-family: var(--tfr-mono);
+    font-size: 10px;
+    letter-spacing: 0.5px;
+    color: var(--tfr-ink-3);
+    background: var(--tfr-paper-alt);
+    min-width: 36px;
+  }
+
+  // ── Subito: render as a toggle pill ("Reguläre Tour" / "Subito-Tour")
+  &__editor .form-check:has(#event_subito) {
+    display: inline-flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    min-height: 36px;
+    #event_subito {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+      width: 1px;
+      height: 1px;
+    }
+    label.form-check-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      padding: 6px 14px;
+      border: 1px solid var(--tfr-line);
+      border-radius: 999px;
+      background: var(--tfr-card);
+      color: var(--tfr-ink-2);
+      font-size: 12px;
+      font-weight: 500;
+      margin: 0;
+      text-transform: none;
+      letter-spacing: 0;
+      transition: all .12s;
+      &::before { content: "Reguläre Tour"; }
+      &:hover { background: var(--tfr-paper-alt); }
+    }
+    #event_subito:checked + label.form-check-label {
+      background: var(--tfr-red);
+      border-color: var(--tfr-red);
+      color: #fff;
+      &::before { content: "Subito-Tour"; }
+    }
+  }
+  // Hide the "IST SUBITO-TOUR" caption label above the pill — the pill
+  // itself now communicates the state.
+  &__editor .row.mb-2:has(#event_subito) > label.col-form-label { display: none; }
+  &__editor .row.mb-2:has(#event_subito) > .labeled { padding-left: 0; }
+
+  // ── Daten nested-date rows: one day per horizontal row ─────────
+  #tfr-daten {
+    counter-reset: tfrDay;
+
+    fieldset > p { margin: 0 0 12px; font-size: 12px; color: var(--tfr-ink-3); }
+
+    #dates_fields .fields {
+      counter-increment: tfrDay;
+      display: grid;
+      grid-template-columns: 48px minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.6fr) minmax(0, 1.6fr) 28px;
+      column-gap: 8px;
+      row-gap: 4px;
+      align-items: end;
+      padding: 14px 0;
+      border-top: 1px solid var(--tfr-line);
+
+      &::before {
+        content: "TAG " counter(tfrDay);
+        font-family: var(--tfr-mono);
+        font-size: 10px;
+        color: var(--tfr-ink-3);
+        letter-spacing: 0.6px;
+        align-self: end;
+        padding-bottom: 9px;
+        white-space: nowrap;
+      }
+
+      &:first-of-type { border-top: 0; padding-top: 4px; }
+
+      // Kill the Bootstrap .row + col layout inside each field — we want
+      // plain stacked label + input filling the grid cell.
+      > .row.mb-2 {
+        display: flex !important;
+        flex-direction: column;
+        align-items: stretch;
+        margin: 0 !important;
+        width: 100%;
+        min-width: 0;
+        gap: 4px;
+
+        > label.col-form-label {
+          flex: 0 0 auto !important;
+          width: auto !important;
+          max-width: none !important;
+          padding: 0 !important;
+          margin: 0 !important;
+          text-align: left !important;
+          font-size: 10px;
+          color: var(--tfr-ink-3);
+          font-weight: 500;
+          letter-spacing: 0.4px;
+          text-transform: uppercase;
+        }
+        > .labeled {
+          flex: 1 1 auto !important;
+          width: 100% !important;
+          max-width: none !important;
+          padding: 0 !important;
+          margin: 0 !important;
+
+          > input { width: 100%; max-width: none; }
+          // The datetime compound widget: date-picker + hour-select + minute-select
+          > .d-flex {
+            display: flex !important;
+            flex-wrap: nowrap;
+            gap: 3px;
+            align-items: center;
+            min-width: 0;
+            > .col-7,
+            > .col-md-7,
+            > .col-lg-5 {
+              flex: 1 1 0;
+              min-width: 0;
+              max-width: none;
+              padding: 0;
+              margin: 0;
+            }
+            .input-group { flex: 1 1 0; min-width: 0; }
+            .input-group > .form-control { min-width: 0; }
+            .input-group > .input-group-text { padding: 0 8px; }
+            .form-select.time {
+              flex: 0 0 auto;
+              width: 44px;
+              min-width: 44px;
+              padding: 0 0 0 6px;
+              background-position: right 2px center;
+              font-size: 12px;
+            }
+            // The ':' literal between hour and minute
+            > :not(.col-7):not(.col-md-7):not(.col-lg-5):not(.form-select):not(.input-group) {
+              flex: 0 0 auto;
+              padding: 0 2px;
+            }
+          }
+        }
+      }
+
+      // Trash-can remove link
+      .controls.align-with-form {
+        align-self: end;
+        padding: 0 0 4px;
+        a { color: var(--tfr-ink-3); text-decoration: none; padding: 6px; font-size: 12px; }
+        a:hover { color: var(--tfr-red); }
+      }
+      .controls.fields-separation { display: none; }
+    }
+
+    // Add-row link rendered by nested-form (only the "add" link gets the pill)
+    a[data-action="nested-form#add"] {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px;
+      border: 1px solid var(--tfr-line);
+      border-radius: var(--tfr-r1);
+      background: var(--tfr-paper-alt);
+      color: var(--tfr-ink);
+      font-size: 13px;
+      font-weight: 500;
+      text-decoration: none !important;
+      margin-top: 12px;
+      &:hover { background: var(--tfr-card); color: var(--tfr-ink); }
+      &::before { content: "+ "; font-family: var(--tfr-mono); color: var(--tfr-ink-3); }
+    }
+    // Per-row remove link: compact trash-style (hide the label, show ✕)
+    a.remove_nested_fields {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      padding: 0;
+      overflow: hidden;
+      text-indent: -9999px;
+      border: 1px solid transparent;
+      border-radius: var(--tfr-r1);
+      background: transparent;
+      color: var(--tfr-ink-3);
+      text-decoration: none !important;
+      position: relative;
+      &::before {
+        content: "✕";
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-family: var(--tfr-mono);
+        text-indent: 0;
+      }
+      &:hover { color: var(--tfr-red); background: var(--tfr-card); border-color: var(--tfr-line); }
+    }
+    // Hide the hidden _destroy input that the nested-form controller leaves
+    // between rows (it's rendered as a stray <input> at the end of .fields).
+    #dates_fields > input[type="hidden"] { display: none; }
+  }
+  &__editor textarea.form-control {
+    min-height: 72px;
+    max-height: 220px;
+    resize: vertical;
+  }
+  // Short single-purpose textareas (location, alternative_route, extra…)
+  // shouldn't sprawl — 2 visible rows is enough.
+  &__editor textarea[name="event[location]"],
+  &__editor textarea[name="event[alternative_route]"],
+  &__editor textarea[name="event[additional_info]"],
+  &__editor textarea[name="event[internal_comment]"],
+  &__editor textarea[name="event[price_description]"],
+  &__editor textarea[name="event[application_conditions]"] {
+    min-height: 56px;
+    height: 56px;
+  }
+  // Description deserves a bit more breathing room
+  &__editor textarea[name="event[description]"] { min-height: 96px; height: 96px; }
+
+  // Datetime-picker widgets: the core helper wraps its date-part in a
+  // Bootstrap .col-7 that forces the input to ~50% of the cell.
+  // Let them expand to the full row width (except inside the Daten grid,
+  // which has its own override below).
+  &__editor .labeled > .d-flex:not(#dates_fields .d-flex) {
+    display: flex !important;
+    flex-wrap: nowrap;
+    gap: 6px;
+    align-items: center;
+    min-width: 0;
+    > .col-7,
+    > .col-md-7,
+    > .col-lg-5 {
+      flex: 1 1 auto;
+      max-width: none;
+      padding: 0;
+      margin: 0 !important;
+    }
+    .input-group { flex: 1 1 auto; min-width: 0; }
+    .form-select.time {
+      flex: 0 0 auto;
+      width: 56px;
+      padding: 0 6px 0 8px;
+    }
+  }
+  &__editor .input-group-text {
+    background: var(--tfr-paper-alt);
+    border-color: var(--tfr-line);
+    border-radius: var(--tfr-r1);
+    color: var(--tfr-ink-3);
+    font-family: var(--tfr-mono);
+    font-size: 12px;
+  }
+  &__editor fieldset,
+  &__editor .fieldset { border: 0; padding: 0; margin: 0; }
+  &__editor legend { display: none; }
+
+  // Card container for metrics / pricing blocks
+  &__card {
+    background: var(--tfr-card);
+    border: 1px solid var(--tfr-line);
+    border-radius: var(--tfr-r2);
+    padding: 16px;
+    &__label {
+      font-family: var(--tfr-mono);
+      font-size: 11px;
+      color: var(--tfr-ink-3);
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+  }
+  &__metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+
+    // Flatten Bootstrap's .row negative margins + col widths inside each
+    // grid cell so the label + input + unit-addon all sit inside the
+    // allocated column width (instead of overflowing and wrapping).
+    > .row.mb-2 {
+      margin: 0 !important;
+      width: 100%;
+      min-width: 0;
+    }
+    > .row.mb-2 > label.col-form-label {
+      padding: 0 !important;
+      margin: 0 0 4px !important;
+    }
+    > .row.mb-2 > .labeled {
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+    .input-group { flex-wrap: nowrap; min-width: 0; }
+    .input-group > .form-control { min-width: 0; }
+    .input-group-text { flex-shrink: 0; }
+  }
+  @media (max-width: 720px) {
+    &__metrics-grid { grid-template-columns: 1fr 1fr; }
+  }
+  &__split-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  &__split-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+  }
+  &__split-4 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 12px;
+  }
+  @media (max-width: 720px) {
+    &__split-2, &__split-3, &__split-4 { grid-template-columns: 1fr; }
+  }
+
+  // Price cards
+  &__price-card {
+    border: 1px solid var(--tfr-line);
+    border-radius: var(--tfr-r1);
+    padding: 12px;
+    background: var(--tfr-paper);
+    &__title { font-size: 12px; font-weight: 600; color: var(--tfr-ink-2); }
+    &__hint { font-size: 11px; color: var(--tfr-ink-3); margin-bottom: 10px; }
+  }
+
+  // ── Preview column ───────────────────────────────────
+  &__preview {
+    position: sticky;
+    top: 56px;
+    align-self: flex-start;
+    max-height: calc(100vh - 56px);
+    overflow-y: auto;
+    border-left: 1px solid var(--tfr-line);
+    background: var(--tfr-paper-alt);
+    padding: 20px 20px 80px;
+  }
+  &__preview-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: var(--tfr-mono);
+    font-size: 10px;
+    color: var(--tfr-ink-3);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  // Preview card
+  &__preview-card {
+    background: var(--tfr-card);
+    border: 1px solid var(--tfr-line);
+    border-radius: var(--tfr-r2);
+    overflow: hidden;
+  }
+  &__preview-hero {
+    position: relative;
+    height: 140px;
+    background: linear-gradient(180deg,
+      oklch(78% 0.03 230) 0%,
+      oklch(62% 0.04 235) 60%,
+      oklch(72% 0.04 250) 100%);
+    color: #fff;
+    overflow: hidden;
+  }
+  &__preview-hero svg {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+  &__preview-hero .pill-row {
+    position: absolute;
+    top: 10px;
+    left: 12px;
+    display: flex;
+    gap: 6px;
+  }
+  &__preview-hero .pill {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: var(--tfr-ink);
+    background: rgba(255,255,255,0.92);
+  }
+  &__preview-hero .pill--dark {
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(4px);
+    color: #fff;
+    font-family: var(--tfr-mono);
+    font-weight: 500;
+    text-transform: none;
+  }
+  &__preview-hero .caption {
+    position: absolute;
+    bottom: 10px;
+    left: 12px;
+    right: 12px;
+    .date {
+      font-family: var(--tfr-mono);
+      font-size: 10px;
+      letter-spacing: 0.5px;
+      opacity: 0.88;
+      text-transform: uppercase;
+    }
+    .name {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+      line-height: 1.15;
+      margin-top: 2px;
+    }
+  }
+  &__preview-body {
+    padding: 14px 16px;
+  }
+  &__preview-metrics {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    font-size: 12px;
+    color: var(--tfr-ink-2);
+    .cell-label {
+      font-size: 10px;
+      color: var(--tfr-ink-3);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin-bottom: 2px;
+    }
+    .cell-value-mono { font-family: var(--tfr-mono); }
+  }
+  &__preview-desc {
+    font-size: 12px;
+    color: var(--tfr-ink-2);
+    line-height: 1.5;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--tfr-line);
+  }
+
+  // Preview summary box
+  &__preview-summary {
+    margin-top: 16px;
+    padding: 12px;
+    background: var(--tfr-card);
+    border: 1px solid var(--tfr-line);
+    border-radius: var(--tfr-r2);
+    font-size: 12px;
+    color: var(--tfr-ink-2);
+    .row-line { display: flex; justify-content: space-between; padding: 2px 0; }
+    .row-line .v { font-family: var(--tfr-mono); color: var(--tfr-ink); }
+  }
+  &__preview-tip {
+    margin-top: 14px;
+    padding: 12px;
+    background: var(--tfr-card);
+    border: 1px solid var(--tfr-sun);
+    border-radius: var(--tfr-r2);
+    display: flex;
+    gap: 10px;
+    font-size: 12px;
+    color: var(--tfr-ink-2);
+    line-height: 1.5;
+    .k { color: var(--tfr-ink); font-weight: 600; }
+  }
+
+  // Topographic texture background for hero — cool slate, not sepia
+  &__topo {
+    position: absolute;
+    inset: 0;
+    opacity: 0.32;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='440' height='440' viewBox='0 0 440 440'><g fill='none' stroke='%231e2530' stroke-width='0.9'><path d='M -20 120 Q 80 70 180 120 T 380 130 T 560 90'/><path d='M -20 160 Q 90 120 190 160 T 400 180 T 560 150'/><path d='M -20 200 Q 100 170 200 200 T 410 225 T 560 210'/><path d='M -20 240 Q 110 220 210 240 T 420 265 T 560 265'/><path d='M -20 280 Q 120 265 220 280 T 430 305 T 560 320'/><path d='M -20 320 Q 130 305 230 325 T 440 345 T 560 370'/><path d='M -20 360 Q 140 345 240 365 T 450 390 T 560 420'/></g></svg>");
+    background-size: 440px 440px;
+    pointer-events: none;
+  }
+
+  // Hide-optional toggle — collapses fields marked optional
+  &[data-hide-optional="true"] [data-optional="true"] { display: none !important; }
+
+  // Suppress entry_form's auto-rendered top/bottom submit rows
+  // (our topbar owns the save/cancel actions).
+  form > .row.mb-2.mt-0 { display: none; }
+}
+
+// Hide the page-level heading, group-context sidebar, and global SAC
+// branding when the redesign is on the page. The new layout is full-bleed
+// and has its own breadcrumb in the topbar, so the duplicate chrome
+// above would only overlap.
+// (body.tfr-active is set by the redesign's init script)
+body.tfr-active .content-header,
+body.tfr-active .nav-left,
+body.tfr-active .page-navigation,
+body.tfr-active .logo,
+body.tfr-active #logo,
+body.tfr-active #root-address { display: none; }
+body.tfr-active .content { padding: 0; margin: 0; max-width: none; width: 100%; }
+// Let the content area grow full-width, but leave the top header and other
+// global containers alone.
+body.tfr-active #content,
+body.tfr-active main .content-wrapper { max-width: none; padding: 0; margin: 0; width: 100%; }

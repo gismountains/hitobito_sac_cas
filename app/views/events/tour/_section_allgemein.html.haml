@@ -1,0 +1,127 @@
+-#  Copyright (c) 2026, Schweizer Alpen-Club. This file is part of
+-#  hitobito_sac_cas and licensed under the Affero General Public License version 3
+-#  or later. See the COPYING file at the top-level directory or at
+-#  https://github.com/hitobito/hitobito_sac_cas.
+
+%section#tfr-allgemein.tour-form--redesign__section
+  .tour-form--redesign__section__head
+    .tour-form--redesign__section__num § 01
+    %div
+      .tour-form--redesign__section__title= t('events.form_tabs.general')
+      .tour-form--redesign__section__subtitle= t('events.form.allgemein_subtitle', default: 'Das Grundgerüst der Tour.')
+
+  = f.labeled_input_field(:name, data: { 'tour-form-redesign-target': 'nameInput', 'preview-field': 'name' })
+
+  - entry.used?(:kind_id) do
+    = f.labeled(:kind_id) do
+      = f.input_field(:kind_id, list: @kinds, data: { action: 'form-field-inheritance#inherit' })
+      .form-text
+        = link_to(t('global.link.override'), '#', title: t('events.form.kind_overrides_link_title', default: ''),
+            data: { action: 'form-field-inheritance#override'})
+
+  = render 'state_field', f: f
+  = render 'main_fields_sac_cas', f: f
+
+  - entry.used?(:number) do
+    = f.labeled_input_field(:number)
+
+  - entry.used?(:description) do
+    = f.labeled_input_field(:description, data: { 'preview-field': 'description' })
+    - if entry.kind_class == Event::Kind
+      = field_inheritance_values(@kinds, { description: :general_information })
+
+  - entry.used?(:contact_id) do
+    %div{ data: { controller: 'form-field-toggle' } }
+      = f.labeled_person_field :contact, data: { action: 'change->form-field-toggle#toggle' }
+      %div{ data: { 'form-field-toggle-target': 'toggle' }, class: entry.contact_id ? '' : 'hidden' }
+        = f.labeled_boolean_field :notify_contact_on_participations,
+          label: t('events.form.label_notify_contact_on_participations'),
+          caption: Event.human_attribute_name(:notify_contact_on_participations)
+
+  = f.labeled_input_field(:location, data: { 'preview-field': 'location' })
+
+  - entry.used?(:reserve_accommodation) do
+    = f.labeled_input_field(:reserve_accommodation)
+  - entry.used?(:accommodation) do
+    = f.labeled_i18n_enum_field(:accommodation, Event::Course.accommodation_labels)
+  - entry.used?(:meals) do
+    = f.labeled_i18n_enum_field(:meals, Event::Course.meals_labels)
+
+  = f.labeled_input_field(:summit, data: { 'preview-field': 'summit' })
+
+  .tour-form--redesign__card
+    .tour-form--redesign__card__label= t('events.form.metrics', default: 'Kennzahlen')
+    .tour-form--redesign__metrics-grid
+      = f.labeled_input_field(:ascent, addon: I18n.t('global.elevation_unit'), data: { 'preview-field': 'ascent' })
+      = f.labeled_input_field(:descent, addon: I18n.t('global.elevation_unit'))
+      = f.labeled_input_field(:duration_h, addon: I18n.t('global.duration_hour_unit'))
+      = f.labeled_input_field(:duration_m, addon: I18n.t('global.duration_minute_unit'))
+
+  - if entry.weak_validation_state?
+    = f.labeled(:disciplines) do
+      = f.select(:discipline_ids, [], {},
+        multiple: true,
+        data: { controller: 'tom-select',
+        tom_select_options_value: tour_essentials_grouped_select_options(@disciplines),
+        tom_select_selected_value: entry.discipline_ids.to_json,
+        tom_select_optgroups_value: tour_essentials_grouped_select_optgroups(@disciplines, color: true),
+        tom_select_optgroups_header_value: tour_essentials_opt_group_header_with_color,
+        tom_select_no_results_value: I18n.t('global.no_list_entries') })
+
+    = f.labeled(:target_groups) do
+      = f.select(:target_group_ids, [], {},
+        multiple: true,
+        data: { controller: 'tom-select',
+        tom_select_options_value: tour_essentials_nested_select_options(@target_groups),
+        tom_select_selected_value: entry.target_group_ids.to_json,
+        tom_select_no_results_value: I18n.t('global.no_list_entries') })
+
+    = f.labeled(:fitness_requirement) do
+      = f.select(:fitness_requirement_id, [], {},
+        data: { controller: 'tom-select',
+        tom_select_options_value: fitness_requirements_select_options(@fitness_requirements),
+        tom_select_selected_value: [entry.fitness_requirement_id].to_json,
+        tom_select_no_results_value: I18n.t('global.no_list_entries') })
+
+    = f.labeled(:technical_requirements) do
+      = f.select(:technical_requirement_ids, [], {},
+        multiple: true,
+        data: { controller: 'tom-select',
+        tom_select_options_value: tour_essentials_grouped_select_options(@technical_requirements),
+        tom_select_selected_value: entry.technical_requirement_ids.to_json,
+        tom_select_optgroups_value: tour_essentials_grouped_select_optgroups(@technical_requirements),
+        tom_select_no_results_value: I18n.t('global.no_list_entries') })
+
+  = f.labeled(:traits) do
+    = f.select(:trait_ids, [], {},
+      multiple: true,
+      data: { controller: 'tom-select',
+      tom_select_options_value: tour_essentials_grouped_select_options(@traits),
+      tom_select_selected_value: entry.trait_ids.to_json,
+      tom_select_optgroups_value: tour_essentials_grouped_select_optgroups(@traits),
+      tom_select_no_results_value: I18n.t('global.no_list_entries') })
+
+  %div{ data: { optional: 'true' } }
+    = f.labeled_input_field(:tourenportal_link)
+    = f.labeled_input_field(:maps)
+    - entry.used?(:alternative_route) do
+      = f.labeled_input_field(:alternative_route)
+    - entry.used?(:additional_info) do
+      = f.labeled_input_field(:additional_info)
+    - entry.used?(:internal_comment) do
+      = f.labeled_input_field(:internal_comment)
+    - entry.used?(:language) do
+      = f.labeled_i18n_enum_field(:language, Event::Course.language_labels)
+    - entry.used?(:cost_center_id) do
+      = f.labeled_input_field(:cost_center_id)
+    - entry.used?(:cost_unit_id) do
+      = f.labeled_input_field(:cost_unit_id)
+
+  = f.labeled :visible_contact_attributes do
+    - Event::ALLOWED_VISIBLE_CONTACT_ATTRIBUTES.each do |option|
+      .form-check
+        = label_tag do
+          = check_box_tag("event[visible_contact_attributes][#{option}]]", class: 'form-check-input', checked: entry.new_record? || entry.visible_contact_attributes.include?(option.to_s))
+          = t("events.general_fields.visible_contact_attributes.#{option}")
+
+  = render 'group_fields', f: f

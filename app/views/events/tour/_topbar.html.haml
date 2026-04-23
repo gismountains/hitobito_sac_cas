@@ -1,0 +1,18 @@
+-#  Copyright (c) 2026, Schweizer Alpen-Club. This file is part of
+-#  hitobito_sac_cas and licensed under the Affero General Public License version 3
+-#  or later. See the COPYING file at the top-level directory or at
+-#  https://github.com/hitobito/hitobito_sac_cas.
+
+.tour-form--redesign__topbar
+  .tour-form--redesign__crumb= "#{@group&.to_s} / #{Event::Tour.model_name.human(count: 2)} /"
+  .tour-form--redesign__title= entry.new_record? ? t('events.form.new_tour', default: 'Neue Tour') : entry.to_s
+  - state_label = entry.new_record? ? t('global.draft', default: 'Entwurf') : I18n.t("activerecord.attributes.event/tour.states.#{entry.state}", default: entry.state.to_s.humanize)
+  %span.tour-form--redesign__badge= state_label
+  - unless entry.new_record?
+    .tour-form--redesign__saved
+      %span.dot
+      = t('global.autosave_hint', default: 'Automatisch gespeichert')
+  .tour-form--redesign__actions{ class: ('ms-auto' if entry.new_record?) }
+    = link_to t('global.button.cancel'), typed_group_events_path(@group, entry.klass), class: 'tour-form--redesign__btn'
+    %button.tour-form--redesign__btn.tour-form--redesign__btn--primary{ type: 'submit' }
+      = t('global.button.save')

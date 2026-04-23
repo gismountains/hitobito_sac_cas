@@ -1,0 +1,35 @@
+-#  Copyright (c) 2026, Schweizer Alpen-Club. This file is part of
+-#  hitobito_sac_cas and licensed under the Affero General Public License version 3
+-#  or later. See the COPYING file at the top-level directory or at
+-#  https://github.com/hitobito/hitobito_sac_cas.
+
+- sections = [{ id: 'tfr-allgemein', num: '01', label: t('events.form_tabs.general') }, { id: 'tfr-daten', num: '02', label: Event.human_attribute_name(:dates) }, { id: 'tfr-anmeldung', num: '03', label: Event::Application.model_name.human }, { id: 'tfr-preise', num: '04', label: t('events.form_tabs.prices') }, { id: 'tfr-fragen', num: '05', label: t('events.form_tabs.application_questions') }, { id: 'tfr-admin', num: '06', label: t('events.form_tabs.admin_questions') }]
+
+%nav.tour-form--redesign__nav{ 'aria-label': 'Tour sections' }
+  .tour-form--redesign__nav-label= t('global.sections', default: 'Abschnitte')
+  - sections.each_with_index do |s, i|
+    = link_to "##{s[:id]}", class: "tour-form--redesign__nav-link #{'is-active' if i.zero?}", data: { 'tour-form-redesign-target': 'navLink', 'section-id': s[:id] } do
+      %span.num= s[:num]
+      %span= s[:label]
+
+  .tour-form--redesign__nav-divider
+
+  .tour-form--redesign__nav-label= t('events.form.publish_readiness', default: 'Bereit für Veröffentlichung')
+  .tour-form--redesign__checklist{ data: { 'tour-form-redesign-target': 'checklist' } }
+    .item{ data: { check: 'name' } }
+      %span.dot
+      %span= Event.human_attribute_name(:name)
+    .item{ data: { check: 'dates' } }
+      %span.dot
+      %span= Event.human_attribute_name(:dates)
+    .item{ data: { check: 'price' } }
+      %span.dot
+      %span= t('events.form_tabs.prices')
+    .item{ data: { check: 'participants' } }
+      %span.dot
+      %span= t('events.form.min_max_participants', default: 'Teilnehmerzahl')
+
+  .tour-form--redesign__hide-optional
+    %label
+      %input{ type: 'checkbox' }
+      = t('events.form.hide_optional', default: 'Optionale Felder ausblenden')

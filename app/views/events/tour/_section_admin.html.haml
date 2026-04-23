@@ -1,0 +1,23 @@
+-#  Copyright (c) 2026, Schweizer Alpen-Club. This file is part of
+-#  hitobito_sac_cas and licensed under the Affero General Public License version 3
+-#  or later. See the COPYING file at the top-level directory or at
+-#  https://github.com/hitobito/hitobito_sac_cas.
+
+- if entry.role_types.present?
+  %section#tfr-admin.tour-form--redesign__section
+    .tour-form--redesign__section__head
+      .tour-form--redesign__section__num § 06
+      %div
+        .tour-form--redesign__section__title= t('events.form_tabs.admin_questions')
+        .tour-form--redesign__section__subtitle= t('events.form.admin_subtitle', default: 'Interne Felder pro Teilnehmer, nur für die Anlassverwaltung.')
+
+    = render 'admin_questions_fields', f: f
+
+- if render_event_contact_attr_fields?
+  %section#tfr-contact.tour-form--redesign__section
+    .tour-form--redesign__section__head
+      .tour-form--redesign__section__num § 07
+      %div
+        .tour-form--redesign__section__title= t('events.form_tabs.contact_attrs')
+
+    = render 'contact_attr_fields', f: f

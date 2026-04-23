@@ -1,0 +1,60 @@
+-#  Copyright (c) 2026, Schweizer Alpen-Club. This file is part of
+-#  hitobito_sac_cas and licensed under the Affero General Public License version 3
+-#  or later. See the COPYING file at the top-level directory or at
+-#  https://github.com/hitobito/hitobito_sac_cas.
+
+%aside.tour-form--redesign__preview{ 'aria-label': 'Mitgliederansicht' }
+  .tour-form--redesign__preview-label
+    %span= t('events.form.preview_header', default: 'Vorschau · Mitgliederansicht')
+
+  .tour-form--redesign__preview-card
+    .tour-form--redesign__preview-hero
+      .tour-form--redesign__topo
+      %svg{ viewBox: '0 0 400 140', preserveAspectRatio: 'none' }
+        %path{ d: 'M 0 140 L 0 100 L 80 60 L 140 85 L 210 40 L 280 72 L 340 55 L 400 85 L 400 140 Z', fill: '#4f5a66', opacity: '0.85' }
+        %path{ d: 'M 0 140 L 0 115 L 60 95 L 130 105 L 200 80 L 280 100 L 360 90 L 400 110 L 400 140 Z', fill: '#2d353f' }
+      .pill-row
+        %span.pill{ data: { 'preview-slot': 'kind' } }= entry.kind&.short_name || t('activerecord.models.event/tour.one')
+        %span.pill.pill--dark{ data: { 'preview-slot': 'fitness' } } T4
+      .caption
+        .date{ data: { 'preview-slot': 'date' } }= entry.dates.first&.start_at&.to_date&.to_s || '—'
+        .name{ data: { 'preview-slot': 'name' } }= entry.name.presence || t('events.form.new_tour', default: 'Neue Tour')
+
+    .tour-form--redesign__preview-body
+      .tour-form--redesign__preview-metrics
+        %div
+          .cell-label= Event::Tour.human_attribute_name(:summit)
+          %div{ data: { 'preview-slot': 'summit' } }= entry.summit.presence || '—'
+        %div
+          .cell-label= Event::Tour.human_attribute_name(:ascent)
+          .cell-value-mono{ data: { 'preview-slot': 'ascent' } }= entry.ascent ? "#{entry.ascent} #{I18n.t('global.elevation_unit')}" : '—'
+        %div
+          .cell-label= t('events.form.min_max_participants', default: 'Teilnehmer')
+          .cell-value-mono{ data: { 'preview-slot': 'participants' } }= "#{entry.minimum_participants || '—'}–#{entry.maximum_participants || '—'}"
+        %div
+          .cell-label= Event::Tour.human_attribute_name(:price_member)
+          .cell-value-mono{ data: { 'preview-slot': 'price' } }= entry.price_member ? "#{t('global.currency')} #{entry.price_member}" : '—'
+
+      - if entry.description.present?
+        .tour-form--redesign__preview-desc{ data: { 'preview-slot': 'description' } }= truncate(entry.description.to_s, length: 140)
+
+  .tour-form--redesign__preview-summary
+    .tour-form--redesign__preview-label
+      %span= t('events.form.preview_summary', default: 'Zusammenfassung')
+    .row-line
+      %span= t('events.form_tabs.application_questions')
+      %span.v{ data: { 'preview-slot': 'questions-count' } }= entry.application_questions.to_a.count
+    .row-line
+      %span= t('events.form_tabs.admin_questions')
+      %span.v{ data: { 'preview-slot': 'admin-count' } }= entry.admin_questions.to_a.count
+    .row-line
+      %span= Event.human_attribute_name(:dates)
+      %span.v{ data: { 'preview-slot': 'dates-count' } }= entry.dates.to_a.count
+
+  .tour-form--redesign__preview-tip
+    %svg{ width: 14, height: 14, viewBox: '0 0 24 24', fill: 'none', stroke: '#d5a13f', 'stroke-width': '2', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }
+      %circle{ cx: 12, cy: 12, r: 9 }
+      %path{ d: 'M12 8 V8.01 M12 11 V17' }
+    %div
+      %span.k= t('events.form.tip_label', default: 'Tipp')
+      = "  #{t('events.form.tip_alt_route', default: 'Füge eine Alternativroute hinzu, damit Teilnehmer auch bei schlechtem Wetter Bescheid wissen.')}"
