@@ -3,7 +3,7 @@
 -#  or later. See the COPYING file at the top-level directory or at
 -#  https://github.com/hitobito/hitobito_sac_cas.
 
-- sections = [{ id: 'tfr-allgemein', num: '01', label: t('events.form_tabs.general') }, { id: 'tfr-daten', num: '02', label: Event.human_attribute_name(:dates) }, { id: 'tfr-anmeldung', num: '03', label: Event::Application.model_name.human }, { id: 'tfr-preise', num: '04', label: t('events.form_tabs.prices') }, { id: 'tfr-fragen', num: '05', label: t('events.form_tabs.application_questions') }, { id: 'tfr-admin', num: '06', label: t('events.form_tabs.admin_questions') }]
+- sections = [{ id: 'tfr-tourenportal-import', num: '00', label: t('event.tourenportal_imports.title') }, { id: 'tfr-allgemein', num: '01', label: t('events.form_tabs.general') }, { id: 'tfr-daten', num: '02', label: Event.human_attribute_name(:dates) }, { id: 'tfr-anmeldung', num: '03', label: Event::Application.model_name.human }, { id: 'tfr-preise', num: '04', label: t('events.form_tabs.prices') }, { id: 'tfr-fragen', num: '05', label: t('events.form_tabs.application_questions') }, { id: 'tfr-admin', num: '06', label: t('events.form_tabs.admin_questions') }]
 
 %nav.tour-form--redesign__nav{ 'aria-label': 'Tour sections' }
   .tour-form--redesign__nav-label= t('global.sections', default: 'Abschnitte')

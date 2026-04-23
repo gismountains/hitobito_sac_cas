@@ -1,0 +1,1103 @@
+{
+    "author": {
+        "full_name": "Geometry Updater",
+        "id": 242,
+        "userid": "488595"
+    },
+    "author_id": 242,
+    "authors": [
+        {
+            "author": {
+                "full_name": "Martin Maier",
+                "id": 53,
+                "userid": "174829"
+            },
+            "author_id": 53
+        },
+        {
+            "author": {
+                "full_name": "Annina Reber",
+                "id": 163,
+                "userid": "195358"
+            },
+            "author_id": 163
+        }
+    ],
+    "availability": "limited",
+    "book": {
+        "author": "Maier",
+        "edition": "de",
+        "id": 374,
+        "isbn": "978-3-85902-374-1",
+        "subtitle": "",
+        "title": "Zentralschweizer Voralpen und Alpen",
+        "year": 2015
+    },
+    "book_id": 374,
+    "book_route_number": "770b",
+    "category": "ascent_descent",
+    "chm_route": false,
+    "comments": null,
+    "currentness": null,
+    "days": 1,
+    "departure_point": {
+        "altitude": 2542,
+        "display_name": "Albert-Heim-Hütte SAC",
+        "geom": {
+            "type": "Point",
+            "coordinates": [
+                2678515,
+                1162474
+            ]
+        },
+        "id": 2147000006,
+        "is_private": false,
+        "linked_routes_by_discipline_denormalization": null,
+        "main_lang": "en",
+        "hrs_id": 0,
+        "type": "hut"
+    },
+    "departure_point_id": 2147000006,
+    "destination_poi": {
+        "altitude": 3078,
+        "description_summer": "A beautiful, easy-to-reach mountain, which offers impressive views of the glaciated basin of the Wintergeberge. It is usually climbed only to\nP. 3073, which stands about 175 m northwest of the highest point, P. 3078 m. In recent decades, the summit glacier, known as the Rund Firn, has been hammered. The freshly uncovered rocks brought many new crystal seams into light. For this reason, the area around the Lochberg is often visited by Crystal Seekers. The well-known Jahrhundertkluft of Planggenstock, a side peak of Lochberg, provides probably the most impressive proof of the crystal wealth of this region.",
+        "description_winter": "Beliebtes Tourenziel, sobald die Strasse zum Göscheneralpsee offen ist. Die steilen Nordhänge versprechen Abfahrtsgenuss bis im Frühsommer. Der höchste Punkt des Lochbergs (3078 m), ein Granitzacken südöstlich des Skigipfels, wird im Winter selten  bestiegen.",
+        "display_name": "Lochberg",
+        "geom": {
+            "type": "Point",
+            "coordinates": [
+                2678895,
+                1164292.6666259761
+            ]
+        },
+        "id": 1059,
+        "linked_routes_by_discipline_denormalization": null,
+        "main_lang": "de",
+        "type": "summit"
+    },
+    "destination_poi_id": 1059,
+    "end_point": null,
+    "end_point_id": null,
+    "expositions": [
+        "E",
+        "SE",
+        "S",
+        "W"
+    ],
+    "first_time_published": "2020-04-14T12:54:53.794344+00:00",
+    "id": 6209,
+    "lock": null,
+    "neighbor_summits": [
+    ],
+    "normal_route": true,
+    "photos": [
+        {
+            "caption": "Beim See P. 2432. Blick in den Aufstieg zur Winterlücke und rechts zu den spitzigen Gipfelfelsen des Lochbergs.",
+            "photo": {
+                "archived": false,
+                "copyright": "Annina Reber",
+                "crop_enabled": true,
+                "crop_height": 3420,
+                "crop_width": 5472,
+                "crop_x": 0,
+                "crop_y": 114,
+                "currentness": null,
+                "filename": "1586849767_397303851.jpg",
+                "id": 276140,
+                "image_usage": null,
+                "original_filename": "DSC05080.JPG",
+                "original_height": 3648,
+                "original_width": 5472,
+                "season": "winter",
+                "type": "photo",
+                "upload_time": "2020-04-14T07:49:45.152928+00:00",
+                "uploader": {
+                    "full_name": "Annina Reber"
+                },
+                "uploader_id": 163,
+                "url": "https://static.www.suissealpine.sac-cas.ch/1586849767_397303851.jpg",
+                "thumbnails": {
+                    "4000x2500": "https://static.www.suissealpine.sac-cas.ch/1586849767_397303851master.jpg",
+                    "1800x1125": "https://static.www.suissealpine.sac-cas.ch/1586849767_397303851L.jpg",
+                    "268x168": "https://static.www.suissealpine.sac-cas.ch/1586849767_397303851M.jpg",
+                    "1200x750": "https://static.www.suissealpine.sac-cas.ch/1586849767_397303851Ma.jpg",
+                    "500x313": "https://static.www.suissealpine.sac-cas.ch/1586849767_397303851Mb.jpg",
+                    "320x200": "https://static.www.suissealpine.sac-cas.ch/1586849767_397303851Mc.jpg",
+                    "160x100": "https://static.www.suissealpine.sac-cas.ch/1586849767_397303851S.jpg",
+                    "140x88": "https://static.www.suissealpine.sac-cas.ch/1586849767_397303851XS.jpg"
+                },
+                "permissions": {
+                    "archive": false,
+                    "recrop": false
+                },
+                "master": {
+                    "width": 4000,
+                    "height": 2500
+                }
+            }
+        },
+        {
+            "caption": "In der Winterlücke: Ein markanter Granitzacken (links) bildet P. 3074 des Lochbergs.",
+            "photo": {
+                "archived": false,
+                "copyright": "Annina Reber",
+                "crop_enabled": true,
+                "crop_height": 2240,
+                "crop_width": 3584,
+                "crop_x": 0,
+                "crop_y": 190,
+                "currentness": null,
+                "filename": "1604917836_432459625.jpg",
+                "id": 276146,
+                "image_usage": null,
+                "original_filename": "DSC03553.JPG",
+                "original_height": 2689,
+                "original_width": 3584,
+                "season": "winter",
+                "type": "photo",
+                "upload_time": "2020-04-14T08:31:45.134948+00:00",
+                "uploader": {
+                    "full_name": "Annina Reber"
+                },
+                "uploader_id": 163,
+                "url": "https://static.www.suissealpine.sac-cas.ch/1604917836_432459625.jpg",
+                "thumbnails": {
+                    "4000x2500": "https://static.www.suissealpine.sac-cas.ch/1604917836_432459625master.jpg",
+                    "1800x1125": "https://static.www.suissealpine.sac-cas.ch/1604917836_432459625L.jpg",
+                    "268x168": "https://static.www.suissealpine.sac-cas.ch/1604917836_432459625M.jpg",
+                    "1200x750": "https://static.www.suissealpine.sac-cas.ch/1604917836_432459625Ma.jpg",
+                    "500x313": "https://static.www.suissealpine.sac-cas.ch/1604917836_432459625Mb.jpg",
+                    "320x200": "https://static.www.suissealpine.sac-cas.ch/1604917836_432459625Mc.jpg",
+                    "160x100": "https://static.www.suissealpine.sac-cas.ch/1604917836_432459625S.jpg",
+                    "140x88": "https://static.www.suissealpine.sac-cas.ch/1604917836_432459625XS.jpg"
+                },
+                "permissions": {
+                    "archive": false,
+                    "recrop": false
+                },
+                "master": {
+                    "width": 3584,
+                    "height": 2240
+                }
+            }
+        },
+        {
+            "caption": "Fussaufstieg über den grobblockigen Grat links oder durch die steile Schneeflanke rechts.",
+            "photo": {
+                "archived": false,
+                "copyright": "Annina Reber",
+                "crop_enabled": true,
+                "crop_height": 2520,
+                "crop_width": 4032,
+                "crop_x": 0,
+                "crop_y": 349,
+                "currentness": null,
+                "filename": "1604917836_974237387.jpg",
+                "id": 276143,
+                "image_usage": null,
+                "original_filename": "Foto 09.03.20, 13 38 06.jpg",
+                "original_height": 3024,
+                "original_width": 4032,
+                "season": "winter",
+                "type": "photo",
+                "upload_time": "2020-04-14T08:15:44.692267+00:00",
+                "uploader": {
+                    "full_name": "Annina Reber"
+                },
+                "uploader_id": 163,
+                "url": "https://static.www.suissealpine.sac-cas.ch/1604917836_974237387.jpg",
+                "thumbnails": {
+                    "4000x2500": "https://static.www.suissealpine.sac-cas.ch/1604917836_974237387master.jpg",
+                    "1800x1125": "https://static.www.suissealpine.sac-cas.ch/1604917836_974237387L.jpg",
+                    "268x168": "https://static.www.suissealpine.sac-cas.ch/1604917836_974237387M.jpg",
+                    "1200x750": "https://static.www.suissealpine.sac-cas.ch/1604917836_974237387Ma.jpg",
+                    "500x313": "https://static.www.suissealpine.sac-cas.ch/1604917836_974237387Mb.jpg",
+                    "320x200": "https://static.www.suissealpine.sac-cas.ch/1604917836_974237387Mc.jpg",
+                    "160x100": "https://static.www.suissealpine.sac-cas.ch/1604917836_974237387S.jpg",
+                    "140x88": "https://static.www.suissealpine.sac-cas.ch/1604917836_974237387XS.jpg"
+                },
+                "permissions": {
+                    "archive": false,
+                    "recrop": false
+                },
+                "master": {
+                    "width": 4000,
+                    "height": 2500
+                }
+            }
+        },
+        {
+            "caption": "Kurz vor dem Skidepot. Unten die Winterlücke und im Hintergrund der Winterstock.",
+            "photo": {
+                "archived": false,
+                "copyright": "Annina Reber",
+                "crop_enabled": true,
+                "crop_height": 3420,
+                "crop_width": 5472,
+                "crop_x": 0,
+                "crop_y": 114,
+                "currentness": null,
+                "filename": "1586851259_2024487353.jpg",
+                "id": 276141,
+                "image_usage": null,
+                "original_filename": "DSC05087.JPG",
+                "original_height": 3648,
+                "original_width": 5472,
+                "season": "winter",
+                "type": "photo",
+                "upload_time": "2020-04-14T08:04:49.864338+00:00",
+                "uploader": {
+                    "full_name": "Annina Reber"
+                },
+                "uploader_id": 163,
+                "url": "https://static.www.suissealpine.sac-cas.ch/1586851259_2024487353.jpg",
+                "thumbnails": {
+                    "4000x2500": "https://static.www.suissealpine.sac-cas.ch/1586851259_2024487353master.jpg",
+                    "1800x1125": "https://static.www.suissealpine.sac-cas.ch/1586851259_2024487353L.jpg",
+                    "268x168": "https://static.www.suissealpine.sac-cas.ch/1586851259_2024487353M.jpg",
+                    "1200x750": "https://static.www.suissealpine.sac-cas.ch/1586851259_2024487353Ma.jpg",
+                    "500x313": "https://static.www.suissealpine.sac-cas.ch/1586851259_2024487353Mb.jpg",
+                    "320x200": "https://static.www.suissealpine.sac-cas.ch/1586851259_2024487353Mc.jpg",
+                    "160x100": "https://static.www.suissealpine.sac-cas.ch/1586851259_2024487353S.jpg",
+                    "140x88": "https://static.www.suissealpine.sac-cas.ch/1586851259_2024487353XS.jpg"
+                },
+                "permissions": {
+                    "archive": false,
+                    "recrop": false
+                },
+                "master": {
+                    "width": 4000,
+                    "height": 2500
+                }
+            }
+        },
+        {
+            "caption": "Bizarre Granitnadeln charakterisieren den Gipfel des Lochbergs.",
+            "photo": {
+                "archived": false,
+                "copyright": "Annina Reber",
+                "crop_enabled": true,
+                "crop_height": 2520,
+                "crop_width": 4032,
+                "crop_x": 0,
+                "crop_y": 252,
+                "currentness": null,
+                "filename": "1586852362_481538365.jpg",
+                "id": 276144,
+                "image_usage": null,
+                "original_filename": "IMG_6042.JPG",
+                "original_height": 3024,
+                "original_width": 4032,
+                "season": "winter",
+                "type": "photo",
+                "upload_time": "2020-04-14T08:21:49.399028+00:00",
+                "uploader": {
+                    "full_name": "Annina Reber"
+                },
+                "uploader_id": 163,
+                "url": "https://static.www.suissealpine.sac-cas.ch/1586852362_481538365.jpg",
+                "thumbnails": {
+                    "4000x2500": "https://static.www.suissealpine.sac-cas.ch/1586852362_481538365master.jpg",
+                    "1800x1125": "https://static.www.suissealpine.sac-cas.ch/1586852362_481538365L.jpg",
+                    "268x168": "https://static.www.suissealpine.sac-cas.ch/1586852362_481538365M.jpg",
+                    "1200x750": "https://static.www.suissealpine.sac-cas.ch/1586852362_481538365Ma.jpg",
+                    "500x313": "https://static.www.suissealpine.sac-cas.ch/1586852362_481538365Mb.jpg",
+                    "320x200": "https://static.www.suissealpine.sac-cas.ch/1586852362_481538365Mc.jpg",
+                    "160x100": "https://static.www.suissealpine.sac-cas.ch/1586852362_481538365S.jpg",
+                    "140x88": "https://static.www.suissealpine.sac-cas.ch/1586852362_481538365XS.jpg"
+                },
+                "permissions": {
+                    "archive": false,
+                    "recrop": false
+                },
+                "master": {
+                    "width": 4000,
+                    "height": 2500
+                }
+            }
+        },
+        {
+            "caption": "Tiefblick zum Skidepot und zur Winterlücke.",
+            "photo": {
+                "archived": false,
+                "copyright": "Annina Reber",
+                "crop_enabled": true,
+                "crop_height": 2520,
+                "crop_width": 4032,
+                "crop_x": 0,
+                "crop_y": 252,
+                "currentness": null,
+                "filename": "1586851705_1146083910.jpg",
+                "id": 276142,
+                "image_usage": null,
+                "original_filename": "IMG_6040.JPG",
+                "original_height": 3024,
+                "original_width": 4032,
+                "season": "winter",
+                "type": "photo",
+                "upload_time": "2020-04-14T08:15:44.692267+00:00",
+                "uploader": {
+                    "full_name": "Annina Reber"
+                },
+                "uploader_id": 163,
+                "url": "https://static.www.suissealpine.sac-cas.ch/1586851705_1146083910.jpg",
+                "thumbnails": {
+                    "4000x2500": "https://static.www.suissealpine.sac-cas.ch/1586851705_1146083910master.jpg",
+                    "1800x1125": "https://static.www.suissealpine.sac-cas.ch/1586851705_1146083910L.jpg",
+                    "268x168": "https://static.www.suissealpine.sac-cas.ch/1586851705_1146083910M.jpg",
+                    "1200x750": "https://static.www.suissealpine.sac-cas.ch/1586851705_1146083910Ma.jpg",
+                    "500x313": "https://static.www.suissealpine.sac-cas.ch/1586851705_1146083910Mb.jpg",
+                    "320x200": "https://static.www.suissealpine.sac-cas.ch/1586851705_1146083910Mc.jpg",
+                    "160x100": "https://static.www.suissealpine.sac-cas.ch/1586851705_1146083910S.jpg",
+                    "140x88": "https://static.www.suissealpine.sac-cas.ch/1586851705_1146083910XS.jpg"
+                },
+                "permissions": {
+                    "archive": false,
+                    "recrop": false
+                },
+                "master": {
+                    "width": 4000,
+                    "height": 2500
+                }
+            }
+        },
+        {
+            "caption": "Blick vom Hauptgipfel P. 3078 zum einfacher zu ersteigenden Skigipfel P. 3074 rechts.",
+            "photo": {
+                "archived": false,
+                "copyright": "Fabian Lippuner",
+                "crop_enabled": true,
+                "crop_height": 1900,
+                "crop_width": 3040,
+                "crop_x": 0,
+                "crop_y": 0,
+                "currentness": null,
+                "filename": "1586867668_1758607463.jpg",
+                "id": 276182,
+                "image_usage": null,
+                "original_filename": "Lochberg_FL.jpg",
+                "original_height": 1900,
+                "original_width": 3072,
+                "season": "winter",
+                "type": "photo",
+                "upload_time": "2020-04-14T12:35:36.270520+00:00",
+                "uploader": {
+                    "full_name": "Fabian Lippuner"
+                },
+                "uploader_id": 137,
+                "url": "https://static.www.suissealpine.sac-cas.ch/1586867668_1758607463.jpg",
+                "thumbnails": {
+                    "4000x2500": "https://static.www.suissealpine.sac-cas.ch/1586867668_1758607463master.jpg",
+                    "1800x1125": "https://static.www.suissealpine.sac-cas.ch/1586867668_1758607463L.jpg",
+                    "268x168": "https://static.www.suissealpine.sac-cas.ch/1586867668_1758607463M.jpg",
+                    "1200x750": "https://static.www.suissealpine.sac-cas.ch/1586867668_1758607463Ma.jpg",
+                    "500x313": "https://static.www.suissealpine.sac-cas.ch/1586867668_1758607463Mb.jpg",
+                    "320x200": "https://static.www.suissealpine.sac-cas.ch/1586867668_1758607463Mc.jpg",
+                    "160x100": "https://static.www.suissealpine.sac-cas.ch/1586867668_1758607463S.jpg",
+                    "140x88": "https://static.www.suissealpine.sac-cas.ch/1586867668_1758607463XS.jpg"
+                },
+                "permissions": {
+                    "archive": false,
+                    "recrop": false
+                },
+                "master": {
+                    "width": 3040,
+                    "height": 1900
+                }
+            }
+        },
+        {
+            "caption": "Gegenblick vom Skigipfel P. 3074 zum Hauptipfel P. 3078.",
+            "photo": {
+                "archived": false,
+                "copyright": "Fabian Lippuner",
+                "crop_enabled": false,
+                "crop_height": 1065,
+                "crop_width": 1704,
+                "crop_x": 0,
+                "crop_y": 603,
+                "currentness": null,
+                "filename": "1586867386_1948227602.jpg",
+                "id": 276178,
+                "image_usage": null,
+                "original_filename": "Lochberg_FL_3.jpg",
+                "original_height": 2272,
+                "original_width": 1704,
+                "season": "winter",
+                "type": "photo",
+                "upload_time": "2020-04-14T12:31:24.965192+00:00",
+                "uploader": {
+                    "full_name": "Fabian Lippuner"
+                },
+                "uploader_id": 137,
+                "url": "https://static.www.suissealpine.sac-cas.ch/1586867386_1948227602.jpg",
+                "thumbnails": {
+                    "4000x2500": "https://static.www.suissealpine.sac-cas.ch/1586867386_1948227602master.jpg",
+                    "1800x1125": "https://static.www.suissealpine.sac-cas.ch/1586867386_1948227602L.jpg",
+                    "268x168": "https://static.www.suissealpine.sac-cas.ch/1586867386_1948227602M.jpg",
+                    "1200x750": "https://static.www.suissealpine.sac-cas.ch/1586867386_1948227602Ma.jpg",
+                    "500x313": "https://static.www.suissealpine.sac-cas.ch/1586867386_1948227602Mb.jpg",
+                    "320x200": "https://static.www.suissealpine.sac-cas.ch/1586867386_1948227602Mc.jpg",
+                    "160x100": "https://static.www.suissealpine.sac-cas.ch/1586867386_1948227602S.jpg",
+                    "140x88": "https://static.www.suissealpine.sac-cas.ch/1586867386_1948227602XS.jpg"
+                },
+                "permissions": {
+                    "archive": false,
+                    "recrop": false
+                },
+                "master": {
+                    "width": 1704,
+                    "height": 2272
+                }
+            }
+        }
+    ],
+    "protection_areas": {
+        "protection_rule": [
+        ],
+        "situation_warning": [
+        ],
+        "danger_area": [
+        ]
+    },
+    "segments": [
+        {
+            "alternative": false,
+            "description": "Von der Albert-Heim-Hütte (2543 m) westwärts zu P. 2480 und Richtung Nordosten zu P. 2381 am Fuss des Sunnig Bergs abfahren. Um den Ausläufer herum nordwestwärts über Steilstufen (34° auf 200 Hm) in Richtung Winterlücke (2854 m) aufsteigen. Meist wird die Winterlücke links liegen gelassen und direkt in einer steilen (40°) Rechtsquerung der nun flacher und breiter werdende Westrücken des Lochbergs erreicht. Ostwärts an den felsdurchsetzten Gipfelaufschwung heran. Skidepot.",
+            "download_end": false,
+            "download_start": false,
+            "geom": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        2678519.0058000013,
+                        1162476.9840000011
+                    ],
+                    [
+                        2678530.8568999991,
+                        1162485.1143999994
+                    ],
+                    [
+                        2678550.5628999993,
+                        1162479.7401
+                    ],
+                    [
+                        2678558.1112999991,
+                        1162470.2699999996
+                    ],
+                    [
+                        2678554.5592,
+                        1162460.309700001
+                    ],
+                    [
+                        2678549.8275000006,
+                        1162451.7899999991
+                    ],
+                    [
+                        2678534.4398000017,
+                        1162447.7696000002
+                    ],
+                    [
+                        2678489.0425000004,
+                        1162443.3425000012
+                    ],
+                    [
+                        2678469.9475999996,
+                        1162448.1829999983
+                    ],
+                    [
+                        2678441.8356,
+                        1162457.5537
+                    ],
+                    [
+                        2678418.1334000006,
+                        1162463.0658
+                    ],
+                    [
+                        2678377.0678999983,
+                        1162461.4122000001
+                    ],
+                    [
+                        2678338.6206,
+                        1162467.7511
+                    ],
+                    [
+                        2678321.5329000019,
+                        1162482.9096000008
+                    ],
+                    [
+                        2678307.2012999989,
+                        1162506.0606000014
+                    ],
+                    [
+                        2678299.7599,
+                        1162531.4164999984
+                    ],
+                    [
+                        2678309.1306000017,
+                        1162560.3553000018
+                    ],
+                    [
+                        2678340.5498000011,
+                        1162590.6721
+                    ],
+                    [
+                        2678390.7104,
+                        1162617.9573
+                    ],
+                    [
+                        2678456.8563,
+                        1162636.1473999992
+                    ],
+                    [
+                        2678649.2304,
+                        1162660.9521000013
+                    ],
+                    [
+                        2678698.564199999,
+                        1162662.8812999986
+                    ],
+                    [
+                        2678742.6614000015,
+                        1162659.2983999997
+                    ],
+                    [
+                        2678789.7903000005,
+                        1162663.432599999
+                    ],
+                    [
+                        2678822.5876,
+                        1162671.4252000004
+                    ],
+                    [
+                        2678855.9360999987,
+                        1162689.8909000009
+                    ],
+                    [
+                        2678883.4968999997,
+                        1162721.8614000008
+                    ],
+                    [
+                        2678904.4431000017,
+                        1162775.8805
+                    ],
+                    [
+                        2678930.9014,
+                        1162826.3167000003
+                    ],
+                    [
+                        2678931.7282,
+                        1162834.8605000004
+                    ],
+                    [
+                        2678922.3575999998,
+                        1162851.6726000011
+                    ],
+                    [
+                        2678911.8845000006,
+                        1162872.067499999
+                    ],
+                    [
+                        2678903.6162,
+                        1162898.5258999988
+                    ],
+                    [
+                        2678900.3090000004,
+                        1162928.2914999984
+                    ],
+                    [
+                        2678901.686999999,
+                        1162957.2303000018
+                    ],
+                    [
+                        2678901.4114000015,
+                        1162991.129999999
+                    ],
+                    [
+                        2678893.0650000013,
+                        1163023.4963000007
+                    ],
+                    [
+                        2678863.6530999988,
+                        1163118.4607999995
+                    ],
+                    [
+                        2678830.3046000004,
+                        1163203.8990999982
+                    ],
+                    [
+                        2678804.6730999984,
+                        1163265.6352000013
+                    ],
+                    [
+                        2678767.4661,
+                        1163372.8465999998
+                    ],
+                    [
+                        2678727.2124999985,
+                        1163475.7888000011
+                    ],
+                    [
+                        2678696.6349,
+                        1163551.1647999994
+                    ],
+                    [
+                        2678661.1625000015,
+                        1163622.0938000008
+                    ],
+                    [
+                        2678640.1352999993,
+                        1163653.9664000012
+                    ],
+                    [
+                        2678622.4965000004,
+                        1163671.3297000006
+                    ],
+                    [
+                        2678606.2355999984,
+                        1163678.2199000008
+                    ],
+                    [
+                        2678572.8871,
+                        1163681.251600001
+                    ],
+                    [
+                        2678554.9726000018,
+                        1163689.5198
+                    ],
+                    [
+                        2678544.7751,
+                        1163702.4734000005
+                    ],
+                    [
+                        2678538.1605000012,
+                        1163720.6634999998
+                    ],
+                    [
+                        2678539.5386000015,
+                        1163737.1999000013
+                    ],
+                    [
+                        2678549.7360000014,
+                        1163750.7047000006
+                    ],
+                    [
+                        2678572.8871,
+                        1163775.5093999989
+                    ],
+                    [
+                        2678597.4162000008,
+                        1163818.2285999991
+                    ],
+                    [
+                        2678600.9990999997,
+                        1163842.4820000008
+                    ],
+                    [
+                        2678596.0381000005,
+                        1163864.5306000002
+                    ],
+                    [
+                        2678579.501699999,
+                        1163881.6182999983
+                    ],
+                    [
+                        2678544.499499999,
+                        1163899.8084000014
+                    ],
+                    [
+                        2678502.3315000013,
+                        1163913.8643999994
+                    ],
+                    [
+                        2678464.5733000003,
+                        1163919.6521999985
+                    ],
+                    [
+                        2678425.1614000015,
+                        1163924.061900001
+                    ],
+                    [
+                        2678398.7030999996,
+                        1163931.5033
+                    ],
+                    [
+                        2678384.3715000004,
+                        1163942.2520000003
+                    ],
+                    [
+                        2678379.1349,
+                        1163956.8592000008
+                    ],
+                    [
+                        2678376.378800001,
+                        1163992.4125999995
+                    ],
+                    [
+                        2678371.9690999985,
+                        1164028.7928000018
+                    ],
+                    [
+                        2678366.181400001,
+                        1164050.8414000012
+                    ],
+                    [
+                        2678359.0155999996,
+                        1164060.625500001
+                    ],
+                    [
+                        2678335.5889,
+                        1164072.3387999982
+                    ],
+                    [
+                        2678315.6074,
+                        1164084.3277000003
+                    ],
+                    [
+                        2678309.2683999985,
+                        1164095.9032999985
+                    ],
+                    [
+                        2678311.7487999983,
+                        1164108.3055999987
+                    ],
+                    [
+                        2678318.6389999986,
+                        1164118.5031000003
+                    ],
+                    [
+                        2678342.7547000013,
+                        1164126.3579000011
+                    ],
+                    [
+                        2678373.0714999996,
+                        1164129.3896000013
+                    ],
+                    [
+                        2678440.3198000006,
+                        1164135.1774000004
+                    ],
+                    [
+                        2678496.8194000013,
+                        1164136.8310000002
+                    ],
+                    [
+                        2678540.0898,
+                        1164132.9725000001
+                    ],
+                    [
+                        2678576.1944000013,
+                        1164123.3262000009
+                    ],
+                    [
+                        2678602.9283000007,
+                        1164116.1603999995
+                    ],
+                    [
+                        2678621.3940000013,
+                        1164118.0896999985
+                    ],
+                    [
+                        2678634.3476000018,
+                        1164125.5311000012
+                    ],
+                    [
+                        2678645.6475000009,
+                        1164135.7285999991
+                    ],
+                    [
+                        2678653.3645000011,
+                        1164156.3990999982
+                    ],
+                    [
+                        2678666.8693000004,
+                        1164177.6209000014
+                    ],
+                    [
+                        2678688.6422999986,
+                        1164196.0865999982
+                    ],
+                    [
+                        2678717.5810999982,
+                        1164214.5524000004
+                    ]
+                ]
+            },
+            "gpx_pois": null,
+            "id": 645174,
+            "photos": [
+                {
+                    "caption": "Überblick vom See P. 2432 zur Winterlücke und rechts zu den spitzigen Gipfelfelsen des Lochbergs.",
+                    "id": 114956,
+                    "photo": {
+                        "archived": false,
+                        "copyright": "Annina Reber",
+                        "crop_enabled": true,
+                        "crop_height": 3420,
+                        "crop_width": 5472,
+                        "crop_x": 0,
+                        "crop_y": 114,
+                        "currentness": null,
+                        "filename": "1586849767_397303851.jpg",
+                        "id": 276140,
+                        "image_usage": null,
+                        "original_filename": "DSC05080.JPG",
+                        "original_height": 3648,
+                        "original_width": 5472,
+                        "season": "winter",
+                        "type": "photo",
+                        "upload_time": "2020-04-14T07:49:45.152928+00:00",
+                        "uploader": {
+                            "full_name": "Annina Reber",
+                            "id": 163,
+                            "userid": "195358"
+                        },
+                        "uploader_id": 163,
+                        "url": "https://static.www.suissealpine.sac-cas.ch/1586849767_397303851.jpg",
+                        "thumbnails": {
+                            "4000x2500": "https://static.www.suissealpine.sac-cas.ch/1586849767_397303851master.jpg",
+                            "1800x1125": "https://static.www.suissealpine.sac-cas.ch/1586849767_397303851L.jpg",
+                            "268x168": "https://static.www.suissealpine.sac-cas.ch/1586849767_397303851M.jpg",
+                            "1200x750": "https://static.www.suissealpine.sac-cas.ch/1586849767_397303851Ma.jpg",
+                            "500x313": "https://static.www.suissealpine.sac-cas.ch/1586849767_397303851Mb.jpg",
+                            "320x200": "https://static.www.suissealpine.sac-cas.ch/1586849767_397303851Mc.jpg",
+                            "160x100": "https://static.www.suissealpine.sac-cas.ch/1586849767_397303851S.jpg",
+                            "140x88": "https://static.www.suissealpine.sac-cas.ch/1586849767_397303851XS.jpg"
+                        },
+                        "permissions": {
+                            "archive": false,
+                            "recrop": false
+                        },
+                        "master": {
+                            "width": 4000,
+                            "height": 2500
+                        }
+                    }
+                }
+            ],
+            "route_id": 6209,
+            "show_end": true,
+            "show_start": true,
+            "style": "plain",
+            "title": "Albert-Heim-Hütte SAC – Winterlücke – Skidepot",
+            "type": "course",
+            "route_type": "ski_tour",
+            "discipline": "ski_tour"
+        },
+        {
+            "alternative": false,
+            "description": "Meist zu Fuss, entweder über den grobblockigen Grat oder südlich davon durch ein Couloir zum Gipfel P. 3074. Oft werden Steigeisen benötigt.",
+            "download_end": false,
+            "download_start": false,
+            "geom": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        2678717.5810999982,
+                        1164214.5524000004
+                    ],
+                    [
+                        2678752.3077000007,
+                        1164240.1838999987
+                    ],
+                    [
+                        2678778.2148,
+                        1164252.3106000014
+                    ],
+                    [
+                        2678794.1999999993,
+                        1164264.988499999
+                    ],
+                    [
+                        2678816.5242,
+                        1164281.249400001
+                    ],
+                    [
+                        2678845.1873999983,
+                        1164289.2419999987
+                    ],
+                    [
+                        2678858.0031999983,
+                        1164290.2065999992
+                    ],
+                    [
+                        2678867.752799999,
+                        1164288.3806999996
+                    ]
+                ]
+            },
+            "gpx_pois": null,
+            "id": 645175,
+            "photos": [
+                {
+                    "caption": "Tiefblick zum Skidepot und zur Winterlücke.",
+                    "id": 114957,
+                    "photo": {
+                        "archived": false,
+                        "copyright": "Annina Reber",
+                        "crop_enabled": true,
+                        "crop_height": 2520,
+                        "crop_width": 4032,
+                        "crop_x": 0,
+                        "crop_y": 252,
+                        "currentness": null,
+                        "filename": "1586851705_1146083910.jpg",
+                        "id": 276142,
+                        "image_usage": null,
+                        "original_filename": "IMG_6040.JPG",
+                        "original_height": 3024,
+                        "original_width": 4032,
+                        "season": "winter",
+                        "type": "photo",
+                        "upload_time": "2020-04-14T08:15:44.692267+00:00",
+                        "uploader": {
+                            "full_name": "Annina Reber",
+                            "id": 163,
+                            "userid": "195358"
+                        },
+                        "uploader_id": 163,
+                        "url": "https://static.www.suissealpine.sac-cas.ch/1586851705_1146083910.jpg",
+                        "thumbnails": {
+                            "4000x2500": "https://static.www.suissealpine.sac-cas.ch/1586851705_1146083910master.jpg",
+                            "1800x1125": "https://static.www.suissealpine.sac-cas.ch/1586851705_1146083910L.jpg",
+                            "268x168": "https://static.www.suissealpine.sac-cas.ch/1586851705_1146083910M.jpg",
+                            "1200x750": "https://static.www.suissealpine.sac-cas.ch/1586851705_1146083910Ma.jpg",
+                            "500x313": "https://static.www.suissealpine.sac-cas.ch/1586851705_1146083910Mb.jpg",
+                            "320x200": "https://static.www.suissealpine.sac-cas.ch/1586851705_1146083910Mc.jpg",
+                            "160x100": "https://static.www.suissealpine.sac-cas.ch/1586851705_1146083910S.jpg",
+                            "140x88": "https://static.www.suissealpine.sac-cas.ch/1586851705_1146083910XS.jpg"
+                        },
+                        "permissions": {
+                            "archive": false,
+                            "recrop": false
+                        },
+                        "master": {
+                            "width": 4000,
+                            "height": 2500
+                        }
+                    }
+                }
+            ],
+            "route_id": 6209,
+            "show_end": true,
+            "show_start": true,
+            "style": "dotted",
+            "title": "Skidepot-Gipfel",
+            "type": "course",
+            "route_type": "ski_tour",
+            "discipline": "ski_tour"
+        }
+    ],
+    "seriousness": 1,
+    "ski_tour_difficulty": "ZS-",
+    "teaser": "Interessante und abwechslungsreiche Tour, die schon im Hochwinter begangen wird. Lohnende Abfahrten zurück über die Aufstiegsroute oder gegen Norden zur Göscheneralp. Teilstück der Urner Haute Route und der Franzosen-Rundtour.",
+    "teaser_title": null,
+    "title": "Von der Albert-Heim-Hütte SAC",
+    "type": "ski_tour",
+    "waypoints": [
+        {
+            "description": null,
+            "id": 171814,
+            "name": "Winterlücke",
+            "reference_poi": {
+                "altitude": 2852,
+                "description_summer": "Zwischen Winterstock und Lochberg. Dient als Übergang von der Albert-Heim-Hütte SAC ins Göschener Tal. Empfehlenswerter sind die Lochberg- oder die Aelpergenlücke.",
+                "description_winter": "Zwischen Winterstock und Lochberg. Dient im Winter vor allem als Zugang zum Lochberg von der Albert-Heim-Hütte, seltener als direkter Übergang ins Göschener Tal.",
+                "display_name": "Winterlücke (UR)",
+                "geom": {
+                    "type": "Point",
+                    "coordinates": [
+                        2678317.675,
+                        1164119.241664632
+                    ]
+                },
+                "id": 4367,
+                "linked_routes_by_discipline_denormalization": null,
+                "main_lang": "de",
+                "type": "traverse"
+            },
+            "reference_poi_id": 4367
+        }
+    ],
+    "permissions": {
+        "update": false,
+        "delete": false,
+        "status_transitions": [
+        ],
+        "is_locked": false,
+        "unlock": false
+    },
+    "main_difficulty": "ZS-",
+    "route_info": {
+        "list": [
+            {
+                "icon": "knob",
+                "label": "Difficulty",
+                "value": "AD-",
+                "type": "difficulty",
+                "discipline": "ski_tour"
+            },
+            {
+                "icon": "arrow2-top-right",
+                "label": "Ascent",
+                "value": "2–2:30 h, 700 m"
+            },
+            {
+                "icon": "arrow2-bottom-right",
+                "label": "Descent",
+                "value": "700 m"
+            },
+            {
+                "icon": "compass",
+                "label": "Exposure",
+                "value": "E, SE, S, W"
+            }
+        ]
+    },
+    "all_additional_informations": [
+        {
+            "label": "Departure and arrival point",
+            "description": {
+                "title": "Albert-Heim-Hütte SAC (2542 m)",
+                "public_transport_stop_comment": "",
+                "parking_lot": "",
+                "poiId": 2147000006
+            },
+            "mapLink": {
+                "label": "Show on map",
+                "options": "\"routeId\":\"6209\", \"segmentsMode\": \"true\", \"zoomLevel\":\"9\", \"poiId\":\"2147000006\", \"center\":[2678515,1162474]"
+            }
+        },
+        {
+            "label": "Crux",
+            "description": {
+                "description": "Steilstufen (34° auf 200 Hm) in der Mulde zur Winterlücke. Bei der Winterlücke kurz 40°. Fussaufstieg am Gipfelaufschwung."
+            }
+        },
+        {
+            "label": "Remarks",
+            "description": {
+                "description": "Bei Rückkehr zur Albert-Heim-Hütte 160 Hm Gegensteigung."
+            }
+        },
+        {
+            "label": "Waypoints",
+            "description": {
+                "title": "Winterlücke (UR) (2852 m)",
+                "description": null,
+                "poiId": 4367
+            },
+            "mapLink": {
+                "label": "Show on map",
+                "options": "\"routeId\":\"6209\", \"segmentsMode\": \"true\", \"zoomLevel\":\"9\", \"poiId\":\"4367\", \"center\":[2678317.675,1164119.2416646]"
+            }
+        },
+        {
+            "label": "Route number",
+            "description": {
+                "description": "770b"
+            }
+        }
+    ],
+    "discipline_season": "winter"
+}

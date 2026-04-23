@@ -1645,6 +1645,21 @@ fr:
       email_check:
         enter_email: "" # to not display in sac wagon
 
+    tourenportal_imports:
+      title: "Importer depuis le Tourenportal"
+      instruction: "Ouvre sac-cas.ch/tourenportal, trouve ta course, copie l'URL depuis la barre d'adresse et colle-la ici."
+      open_portal_link: "Ouvrir le Tourenportal"
+      url_label: "URL"
+      submit: "Importer"
+      cancel: "Annuler"
+      retry: "Réessayer"
+      overwrite_confirm: "Le formulaire contient déjà des valeurs. Voulez-vous les écraser ?"
+      errors:
+        invalid_url: "Ce n'est pas une URL Tourenportal valide."
+        not_found: "Course introuvable."
+        timeout: "Le Tourenportal ne répond pas (délai dépassé). Veuillez réessayer plus tard."
+        upstream: "Le Tourenportal a renvoyé une réponse inattendue."
+        network: "Le Tourenportal est actuellement inaccessible."
   events:
     flash:
       dates_changed: "Tour %{event_name} wurde erfolgreich aktualisiert. Stelle bitte sicher, dass du die geänderten von- und bis-Daten mit deiner Tourenkommission abgestimmt hast."

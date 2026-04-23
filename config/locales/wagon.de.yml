@@ -1621,6 +1621,21 @@ de:
       email_check:
         enter_email: "" # to not display in sac wagon
 
+    tourenportal_imports:
+      title: "Import aus Tourenportal"
+      instruction: "Öffne sac-cas.ch/tourenportal, suche deine Tour, kopiere die URL aus der Adressleiste und füge sie hier ein."
+      open_portal_link: "Tourenportal öffnen"
+      url_label: "URL"
+      submit: "Importieren"
+      cancel: "Abbrechen"
+      retry: "Nochmals versuchen"
+      overwrite_confirm: "Es sind bereits Werte im Formular. Möchtest du diese überschreiben?"
+      errors:
+        invalid_url: "Das ist keine gültige Tourenportal-URL."
+        not_found: "Tour nicht gefunden."
+        timeout: "Tourenportal antwortet nicht (Timeout). Bitte später erneut versuchen."
+        upstream: "Tourenportal-Antwort im unerwarteten Format."
+        network: "Tourenportal ist momentan nicht erreichbar."
   events:
     flash:
       dates_changed: Tour %{event_name} wurde erfolgreich aktualisiert. Stelle bitte sicher, dass du die geänderten von- und bis-Daten mit deiner Tourenkommission abgestimmt hast.

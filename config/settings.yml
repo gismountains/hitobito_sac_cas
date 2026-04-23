@@ -95,3 +95,7 @@ hitobito_log:
 #    # Wenn true, dann wird für Abo Magazine bei der Neuanmeldung und beim
 #    # Jahresinkasso CreateYearlyAboAlpenInvoicesJob eine Rechnung ausgelöst.
 #    automatic_invoice_enabled: false
+
+sac_tourenportal:
+  api_base_url: https://www.suissealpine.sac-cas.ch/api/1
+  timeout_seconds: 10

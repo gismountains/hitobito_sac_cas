@@ -1,0 +1,287 @@
+-#  Copyright (c) 2026, Schweizer Alpen-Club. This file is part of
+-#  hitobito_sac_cas and licensed under the Affero General Public License version 3
+-#  or later. See the COPYING file at the top-level directory or at
+-#  https://github.com/hitobito/hitobito_sac_cas.
+-#
+-#  Step-0 widget: paste a SAC Tourenportal URL → prefill form fields.
+-#  Implemented as inline JS because stimulus controllers in wagons are
+-#  not auto-registered (see wagon.js.coffee comment).
+- group_id = entry.group_ids.first || entry.groups.first&.id || params[:group_id] || current_user.primary_group_id
+- endpoint = group_id ? group_event_tourenportal_imports_path(group_id) : "#"
+- widget_id = "tourenportal-import-#{SecureRandom.hex(4)}"
+
+:css
+  @keyframes tourenportal-imported-pulse {
+    0%   { background-color: rgba(255, 221, 87, 0.55); }
+    60%  { background-color: rgba(255, 221, 87, 0.25); }
+    100% { background-color: transparent; }
+  }
+  .tourenportal-imported-flash {
+    animation: tourenportal-imported-pulse 2.5s ease-out;
+    border-radius: 4px;
+  }
+  @keyframes tourenportal-blink {
+    0%, 100% { background-color: transparent; }
+    25%      { background-color: rgba(220, 53, 69, 0.35); }
+    50%      { background-color: transparent; }
+    75%      { background-color: rgba(220, 53, 69, 0.35); }
+  }
+  .tourenportal-blink {
+    animation: tourenportal-blink 0.7s ease-in-out;
+    border-radius: 4px;
+  }
+  .tourenportal-disabled-look,
+  .btn.tourenportal-disabled-look {
+    opacity: 0.65;
+    cursor: not-allowed !important;
+  }
+
+%section.tour-form--redesign__section{ id: "tfr-tourenportal-import" }
+  .tourenportal-import{ id: widget_id, data: { endpoint: endpoint, "overwrite-confirm" => t("event.tourenportal_imports.overwrite_confirm") } }
+    .tour-form--redesign__section__head
+      .tour-form--redesign__section__num § 00
+      %div
+        .tour-form--redesign__section__title= t("event.tourenportal_imports.title")
+        .tour-form--redesign__section__subtitle= t("event.tourenportal_imports.instruction")
+        .mt-2
+          %button.btn.btn-primary{ type: "button", data: { role: "tourenportal-open" } }
+            = t("event.tourenportal_imports.title")
+
+    .modal.fade{ tabindex: -1, role: "dialog", data: { role: "tourenportal-modal" }, style: "display: none;" }
+      .modal-dialog
+        .modal-content
+          .modal-header
+            %h5.modal-title= t("event.tourenportal_imports.title")
+            %button.btn-close{ type: "button", data: { role: "tourenportal-close" },
+                               aria: { label: t("event.tourenportal_imports.cancel") } }
+          .modal-body
+            %p.small.text-muted= t("event.tourenportal_imports.instruction")
+            %p.small.mb-3
+              = link_to t("event.tourenportal_imports.open_portal_link", default: "Tourenportal öffnen"),
+                        "https://www.sac-cas.ch/de/huetten-und-touren/sac-tourenportal/",
+                        target: "_blank", rel: "noopener", class: "btn btn-sm btn-outline-primary"
+            .mb-2
+              %label.form-label{ for: "#{widget_id}-url" }= t("event.tourenportal_imports.url_label")
+              %input.form-control{ type: "url", id: "#{widget_id}-url", data: { role: "tourenportal-url" } }
+            .form-check.d-none.mb-2{ data: { role: "tourenportal-overwrite-box" } }
+              %input.form-check-input{ type: "checkbox", id: "#{widget_id}-overwrite",
+                                       data: { role: "tourenportal-overwrite-check" } }
+              %label.form-check-label{ for: "#{widget_id}-overwrite" }
+                = t("event.tourenportal_imports.overwrite_confirm")
+            .alert.alert-danger.d-none{ data: { role: "tourenportal-error" } }
+            .d-none{ data: { role: "tourenportal-spinner" } }
+              %span.spinner-border.spinner-border-sm
+          .modal-footer
+            %button.btn.btn-secondary{ type: "button", data: { role: "tourenportal-close" } }
+              = t("event.tourenportal_imports.cancel")
+            %button.btn.btn-primary{ type: "button", data: { role: "tourenportal-submit" } }
+              = t("event.tourenportal_imports.submit")
+
+    :javascript
+      (function() {
+        var root = document.getElementById("#{widget_id}");
+        if (!root || root.dataset.initialized) return;
+        root.dataset.initialized = "true";
+
+        var endpoint    = root.dataset.endpoint;
+        var modal    = root.querySelector("[data-role='tourenportal-modal']");
+        var urlInput = root.querySelector("[data-role='tourenportal-url']");
+        var error    = root.querySelector("[data-role='tourenportal-error']");
+        var spinner  = root.querySelector("[data-role='tourenportal-spinner']");
+        var submit   = root.querySelector("[data-role='tourenportal-submit']");
+        var overwriteBox   = root.querySelector("[data-role='tourenportal-overwrite-box']");
+        var overwriteCheck = root.querySelector("[data-role='tourenportal-overwrite-check']");
+        var FIELDS         = ["name","summit","ascent","descent","duration_h","duration_m","location","description","maps","tourenportal_link"];
+        var MULTI_FIELDS   = ["discipline_ids"];
+        var aborter  = null;
+        var lastSubmit = 0;
+
+        function show() {
+          modal.classList.add("show");
+          modal.style.display = "block";
+          clearError();
+          setLoading(false);
+          refreshOverwriteState();
+          setTimeout(function(){ urlInput.focus(); }, 0);
+        }
+        function hide() {
+          if (aborter) aborter.abort();
+          aborter = null;
+          modal.classList.remove("show");
+          modal.style.display = "none";
+          urlInput.value = "";
+          clearError();
+          setLoading(false);
+          overwriteCheck.checked = false;
+          overwriteBox.classList.add("d-none");
+        }
+
+        // Show the overwrite checkbox (and disable the submit button) whenever
+        // the form already has at least one target field filled; the user has
+        // to explicitly acknowledge an overwrite.
+        function refreshOverwriteState() {
+          var anyFilled = FIELDS.concat(MULTI_FIELDS).some(function(k){
+            var input = findInput(k);
+            if (!input) return false;
+            if (input.tagName === "SELECT" && input.multiple) {
+              return (input.tomselect ? input.tomselect.items.length : input.selectedOptions.length) > 0;
+            }
+            return String(input.value || "").trim() !== "";
+          });
+          if (anyFilled) {
+            overwriteBox.classList.remove("d-none");
+          } else {
+            overwriteBox.classList.add("d-none");
+            overwriteCheck.checked = false;
+          }
+          refreshSubmitLook();
+        }
+
+        // Submit button is "visually disabled" when the user still needs to
+        // acknowledge the overwrite. We do NOT set the native `disabled`
+        // attribute because a disabled button swallows click events, and
+        // we want clicks through so we can blink the checkbox row to
+        // explain why nothing happened.
+        function refreshSubmitLook() {
+          var needsAck = !overwriteBox.classList.contains("d-none") && !overwriteCheck.checked;
+          submit.classList.toggle("tourenportal-disabled-look", needsAck);
+          submit.setAttribute("aria-disabled", needsAck ? "true" : "false");
+        }
+        function clearError() { error.classList.add("d-none"); error.textContent = ""; }
+        function setLoading(on) { submit.disabled = on; spinner.classList.toggle("d-none", !on); }
+        function showError(msg) { error.textContent = msg || ""; error.classList.remove("d-none"); }
+
+        function csrfToken() {
+          var m = document.querySelector("meta[name='csrf-token']");
+          return m ? m.content : "";
+        }
+
+        function findInput(key) {
+          var form = root.closest("form");
+          if (!form) return null;
+          return form.querySelector('[name="event[' + key + ']"]') ||
+                 form.querySelector('[name="event[' + key + '][]"]');
+        }
+
+        function setInput(key, value) {
+          var input = findInput(key);
+          if (!input) return;
+          if (input.tagName === "SELECT" && input.multiple) {
+            setMultiSelect(input, value);
+          } else {
+            input.value = value == null ? "" : String(value);
+          }
+          input.dispatchEvent(new Event("change", { bubbles: true }));
+          input.dispatchEvent(new Event("input",  { bubbles: true }));
+          flash(input);
+        }
+
+        function setMultiSelect(select, values) {
+          var list = Array.isArray(values) ? values : [values];
+          var stringList = list.map(function(v){ return String(v); });
+
+          // hitobito wraps select[multiple] with TomSelect; the native
+          // <option> list is empty until items are added via its API.
+          if (select.tomselect) {
+            var ts = select.tomselect;
+            var labels = (window.__tourenportal_discipline_labels || []).reduce(function(acc, d){
+              acc[String(d.id)] = d.label; return acc;
+            }, {});
+            ts.clear(true);
+            stringList.forEach(function(v){
+              if (!ts.options[v]) {
+                ts.addOption({ value: v, text: labels[v] || v });
+              }
+              ts.addItem(v, true);
+            });
+            ts.refreshItems();
+            return;
+          }
+
+          var wanted = {};
+          stringList.forEach(function(v){ wanted[v] = true; });
+          Array.prototype.forEach.call(select.options, function(opt){
+            opt.selected = !!wanted[opt.value];
+          });
+        }
+
+        function blinkOverwrite() {
+          overwriteBox.classList.remove("tourenportal-blink");
+          void overwriteBox.offsetWidth; // restart animation
+          overwriteBox.classList.add("tourenportal-blink");
+          setTimeout(function(){ overwriteBox.classList.remove("tourenportal-blink"); }, 800);
+        }
+
+        function flash(input) {
+          // Pulse a yellow background then fade back, so the user can see
+          // which fields were just overwritten by the import.
+          var target = input.closest(".control-group, .mb-3, .form-group, .row, .form-floating") || input;
+          target.classList.remove("tourenportal-imported-flash"); // restart animation
+          // force reflow
+          void target.offsetWidth;
+          target.classList.add("tourenportal-imported-flash");
+          setTimeout(function(){ target.classList.remove("tourenportal-imported-flash"); }, 2500);
+        }
+
+        function applyFields(fields) {
+          // Stash labels for multi-selects before filtering.
+          window.__tourenportal_discipline_labels = fields.disciplines || null;
+
+          var allowed = FIELDS.concat(MULTI_FIELDS);
+          var keys = Object.keys(fields).filter(function(k){ return allowed.indexOf(k) !== -1; });
+          keys.forEach(function(k){ setInput(k, fields[k]); });
+          hide();
+        }
+
+        function submitUrl() {
+          // Gate: if the overwrite box is visible, the user must acknowledge
+          // it before we touch the form. Blink the box if they try without.
+          if (!overwriteBox.classList.contains("d-none") && !overwriteCheck.checked) {
+            blinkOverwrite();
+            return;
+          }
+
+          var now = Date.now();
+          if (now - lastSubmit < 1000) return;
+          lastSubmit = now;
+
+          var url = (urlInput.value || "").trim();
+          if (!url) return;
+          if (!endpoint || endpoint === "#") { showError("Import endpoint not configured."); return; }
+
+          setLoading(true);
+          clearError();
+          aborter = new AbortController();
+
+          fetch(endpoint, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "Accept": "application/json", "X-CSRF-Token": csrfToken() },
+            body: JSON.stringify({ url: url }),
+            credentials: "same-origin",
+            signal: aborter.signal
+          })
+          .then(function(res){ return res.json().then(function(body){ return { status: res.status, body: body }; }).catch(function(){ return { status: res.status, body: null }; }); })
+          .then(function(r){
+            if (r.body && r.body.status === "ok") {
+              applyFields(r.body.fields || {});
+            } else {
+              showError((r.body && (r.body.message || r.body.code)) || "Fehler: " + r.status);
+            }
+          })
+          .catch(function(err){ if (err.name !== "AbortError") showError(err.message); })
+          .finally(function(){ setLoading(false); aborter = null; });
+        }
+
+        root.addEventListener("click", function(e) {
+          var t = e.target.closest("[data-role]");
+          if (!t || !root.contains(t)) return;
+          var role = t.dataset.role;
+          if (role === "tourenportal-open")   { e.preventDefault(); show(); }
+          if (role === "tourenportal-close")  { e.preventDefault(); hide(); }
+          if (role === "tourenportal-submit") { e.preventDefault(); submitUrl(); }
+        });
+
+        urlInput.addEventListener("input", clearError);
+        overwriteCheck.addEventListener("change", refreshOverwriteState);
+        refreshSubmitLook();
+      })();

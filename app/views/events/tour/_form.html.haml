@@ -20,6 +20,7 @@
 
       .tour-form--redesign__editor
         .inner
+          = render 'events/tour/import_from_tourenportal', f: f, entry: entry
           = render 'events/tour/section_allgemein', f: f, entry: entry
           = render 'events/tour/section_daten',     f: f, entry: entry
           = render 'events/tour/section_anmeldung', f: f, entry: entry
